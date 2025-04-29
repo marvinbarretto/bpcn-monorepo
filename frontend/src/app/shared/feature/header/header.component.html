@@ -1,0 +1,50 @@
+<div class="header">
+  <ng-container *ngIf="!isHomepage; else titleWithoutLink">
+    <a routerLink="/" class="header__title">
+      <h1>Black Prostate Cancer Network</h1>
+    </a>
+  </ng-container>
+  <ng-template #titleWithoutLink>
+    <h1 class="header__title">Black Prostate Cancer Network</h1>
+  </ng-template>
+  <app-user-info></app-user-info>
+</div>
+
+<nav class="menu" [ngClass]="{ 'menu--mobile': isMobile, 'menu--open': isMobile && isNavOpen }">
+  <button class="menu__toggle" *ngIf="isMobile" (click)="toggleMobileNavigation()">
+    <span class="material-symbols-outlined">menu</span>
+    <span class="menu__toggle__label">Toggle navigation</span>
+  </button>
+
+  <ul class="menu__list" [ngClass]="{ 'hidden': isMobile && !isNavOpen }">
+    <li *ngFor="let link of pageStore.primaryNavLinksComputed$$()">
+      <a [routerLink]="['/', link.slug]" routerLinkActive="selected"
+        (click)="closeNavOnLinkClick()"
+        [routerLinkActiveOptions]="{ exact: true }">{{ link.title }}</a>
+    </li>
+
+    <li *ngIf="'news' | featureFlag">
+      <a (click)="closeNavOnLinkClick()" routerLink="/news" routerLinkActive="selected">News</a>
+    </li>
+    <li *ngIf="'events' | featureFlag">
+      <a (click)="closeNavOnLinkClick()" routerLink="/events" routerLinkActive="selected">Events</a>
+    </li>
+    <li *ngIf="'siteMap' | featureFlag">
+      <a (click)="closeNavOnLinkClick()" routerLink="/site-map" routerLinkActive="selected">Site map</a>
+    </li>
+  </ul>
+
+  <button *ngIf="'search' | featureFlag" class="link link--search" (click)="toggleOverlay('search')">
+    <span class="label">Search</span>
+    <span class="material-symbols-outlined">search</span>
+  </button>
+
+  <button role="button" *ngIf="'accessibility' | featureFlag" class="link link-a11y" (click)="toggleOverlay('accessibility')">
+    <span class="label">Accessibility</span>
+    <span class="material-symbols-outlined">accessibility_new</span>
+  </button>
+</nav>
+
+<app-search *ngIf="overlayService.isOverlayActive('search')" (close)="overlayService.hideOverlay()"></app-search>
+<app-accessibility *ngIf="overlayService.isOverlayActive('accessibility')" (close)="overlayService.hideOverlay()"></app-accessibility>
+

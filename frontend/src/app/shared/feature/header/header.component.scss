@@ -1,0 +1,145 @@
+$header-bg-color: #333;
+$menu-bg-color: #444;
+$text-color: white;
+$TABLET-BREAKPOINT: 750px; // Q: Where should I centralise and get this from?
+$DESKTOP-BREAKPOINT: 1024px; // Q: Where should I centralise and get this from?
+
+:host {
+  display: block;
+}
+
+.header {
+  background-color: $header-bg-color;
+  color: $text-color;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  flex-direction: column-reverse;
+}
+
+.header__title {
+  text-decoration: none;
+  padding: 1rem;
+  line-height: 1.1;
+  padding: 1rem 2rem;
+}
+
+
+
+.label {
+  display: none;
+  @media (min-width: $TABLET-BREAKPOINT) {
+    display: block;
+  }
+}
+
+
+
+.menu {
+  background-color: $menu-bg-color;
+  color: white;
+  display: flex;
+  gap: .75rem;
+  position: relative;
+  z-index: 100;
+}
+
+.menu__list {
+  @media (min-width: $TABLET-BREAKPOINT) {
+    display: flex;
+  }
+}
+
+a, button {
+  display: block;
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, .0625rem);
+  text-underline-offset: .3em;
+  padding: .5rem;
+}
+
+a:hover, button:hover {
+  background-color: white;
+  color: #333;
+}
+
+
+.link {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  align-self: center;
+  overflow: hidden;
+  text-decoration: none;
+  .label {
+    text-decoration: underline;
+    text-decoration-thickness: max(1px, .0625rem);
+    text-underline-offset: .3em;
+  }
+}
+
+nav ul {
+  flex: 1;
+  align-items: center;
+}
+
+.selected {
+  background-color: black;
+}
+
+
+.menu__toggle {
+  padding: .5rem;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  flex: 1;
+  text-align: left;
+  display: flex;
+  gap: .25rem;
+  align-items: center;
+  justify-content: flex-start;
+  @media (min-width: $TABLET-BREAKPOINT) {
+    display: none;
+  }
+  &:hover {
+    background-color: white;
+  }
+}
+
+.menu__toggle__label {
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, .0625rem);
+  text-underline-offset: .3em;
+}
+
+
+.menu--mobile .menu__toggle {
+  display: flex;
+}
+
+@media screen and (min-width: 601px) {
+  /* Ensure the navigation is always visible on desktop */
+  .menu__list {
+    display: flex;
+  }
+
+  .menu__toggle {
+    display: none; /* Hide toggle button on desktop */
+  }
+}
+
+.menu--open {
+  position: fixed;
+
+  width: 100%;
+  flex-direction: column;
+  gap: 0;
+  .a11y-link {
+    width: 100%;
+  }
+}

@@ -81,7 +81,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectName}"],
       "options": {
-        "jestConfig": "jest.config.ts"
+        "jestConfig": "jest.config.app.ts"
       }
     },
     "serve-static": {
@@ -97,7 +97,7 @@
       "executor": "@angular-devkit/build-angular:server",
       "options": {
         "outputPath": "dist/bpcn-monorepo/server",
-        "main": "src/server.ts",
+        "main": "server.ts",
         "tsConfig": "tsconfig.server.json",
         "inlineStyleLanguage": "scss"
       },
