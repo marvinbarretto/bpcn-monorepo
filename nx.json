@@ -76,5 +76,5 @@
       "unitTestRunner": "jest"
     }
   },
-  "defaultProject": "bpcn-monorepo"
+  "defaultProject": "frontend"
 }

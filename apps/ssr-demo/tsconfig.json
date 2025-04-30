@@ -1,21 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": ".",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
     "target": "es2022",
-    "module": "esnext",
-    "lib": ["es2020", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {},
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
@@ -36,8 +21,7 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "compileOnSave": false,
-  "exclude": ["node_modules", "tmp"],
+  "extends": "../../tsconfig.base.json",
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test",
-    "dev:ssr": "nx run frontend:serve:ssr"
+    "start": "nx serve frontend",
+    "build": "nx build frontend",
+    "test": "nx test frontend",
+    "dev:ssr": "nx run frontend:serve-ssr"
   },
   "private": true,
   "dependencies": {
