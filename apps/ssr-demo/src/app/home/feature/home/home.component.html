@@ -1,0 +1,42 @@
+
+
+<section class="hero" *ngIf="'homepageHero' | featureFlag"></section>
+
+<div class="sections">
+
+  <section class="news-widget" *ngIf="'homepageNewsWidget' | featureFlag">
+    <h2>News</h2>
+    <p>...</p>
+  </section>
+
+
+  <section class="events-widget">
+  <h2>Events</h2>
+  <p>...</p>
+  </section>
+
+
+  <!-- TODO: !authStore.isAuthenticated() not working -->
+  <section class="promote-event">
+    <h2>Promote your event</h2>
+    <p>
+      <a routerLink="/register">Register now</a> to start creating and sharing events!
+    </p>
+  </section>
+
+  <section>
+    <h2>Featured event</h2>
+    <p>...</p>
+  </section>
+
+  <section>
+    <h2>Feedback</h2>
+    <p>...</p>
+  </section>
+
+</div>
+
+
+
+
+

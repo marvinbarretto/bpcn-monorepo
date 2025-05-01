@@ -1,0 +1,40 @@
+// TODO: Add styles for the accessibility component
+
+:host {
+  display: block;
+  position: relative;
+}
+
+.accessibility {
+  background-color: white;
+  color: black;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.combinations {
+  display: flex;
+  gap: 1rem;
+}
+
+app-a11y-letter {
+  cursor: pointer;
+}
+
+
+
+.accessibility div {
+  background-color: rgba(black, .1);
+  display: flex;
+  gap: 1rem;
+  min-height: 2rem;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+button {
+  margin-top: 1rem;
+  align-self: flex-start;
+}

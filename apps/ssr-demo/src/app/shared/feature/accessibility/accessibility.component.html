@@ -1,0 +1,65 @@
+<div class="backdrop" (click)="closeOverlay()" aria-hidden="true"></div>
+
+<div class="overlay" role="dialog">
+
+  <form class="accessibility" [formGroup]="accessibilityForm">
+    <div>
+      <label for="font-size">Font Size</label>
+      <input
+        type="range"
+        id="font-size"
+        min="12"
+        max="24"
+        formControlName="fontSize"
+      />
+    </div>
+
+    <div>
+      <label for="bg-color">Background Color</label>
+      <input type="color" id="bg-color" formControlName="bgColor" />
+    </div>
+
+    <div>
+      <label for="text-color">Text Color</label>
+      <input type="color" id="text-color" formControlName="textColor" />
+    </div>
+
+    <div>
+      <label for="line-height">Line Height</label>
+      <input type="range" id="line-height" min="1" max="2.5" step="0.1" formControlName="lineHeight" />
+    </div>
+
+    <div>
+      <label for="letter-spacing">Letter Spacing</label>
+      <input type="range" id="letter-spacing" min="0" max="5" step="0.1" formControlName="letterSpacing" />
+    </div>
+
+    <div class="combinations">
+      <app-a11y-letter
+        *ngFor="let combination of colourCombinations"
+        [bgColor]="combination.backgroundColor"
+        [textColor]="combination.textColor"
+        [type]="combination.type"
+        (letterClicked)="applyCombination(combination.backgroundColor, combination.textColor)"
+      ></app-a11y-letter>
+    </div>
+  </form>
+  <div class="actions">
+    <button class="close" (click)="closeOverlay()">
+      <span class="material-symbols-outlined">close</span>
+      <span class="label">Close</span>
+    </button>
+
+    <!-- OK button -->
+    <button class="ok" (click)="closeOverlay()">
+      <span class="material-symbols-outlined">done</span>
+      <span class="label">Save changes</span>
+    </button>
+
+    <!-- Reset button -->
+    <button class="reset" (click)="resetToDefault()">
+      <span class="material-symbols-outlined">restore</span>
+      <span class="label">Reset</span>
+    </button>
+  </div>
+</div>

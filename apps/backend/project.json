@@ -1,17 +1,16 @@
 {
-    "name": "backend",
-    "projectType": "application",
-    "sourceRoot": "backend",
-    "targets": {
-      "serve": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npm run develop",
-          "cwd": "backend",
-          "color": true
-        }
+  "name": "backend",
+  "projectType": "application",
+  "sourceRoot": "apps/backend",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run develop",
+        "cwd": "apps/backend",
+        "color": true
       }
-    },
-    "tags": []
+    }
+  },
+  "tags": []
 }
-  

@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
     private userPreferencesStore: UserPreferencesStore,
     public overlayService: OverlayService
   ) {
+    console.log('✅ AppComponent constructed');
     this.isBackendAvailable = this.backendHealthService.isStrapiAvailable$$;
 
     if (isPlatformServer(this.platformId)) {
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    console.log('✅ AppComponent ngOnInit');
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.activatedRoute),
@@ -50,6 +52,7 @@ export class AppComponent implements OnInit {
       mergeMap(route => route.data),
       map(data => data['title']) // Access the 'title' from route data
     ).subscribe(title => {
+      console.log('✅ Setting title:', title);
       this.titleService.setTitle(title);
     });
   }

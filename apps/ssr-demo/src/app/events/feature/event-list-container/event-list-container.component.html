@@ -1,0 +1,29 @@
+
+<!-- TODO: Pagination -->
+
+<div class="container container--{{ filterStatus.toLowerCase() }}">
+  <app-hero
+    [title]="filterStatus === EventStatus.PENDING ? 'Pending Events' : 'Upcoming Events'">
+  </app-hero>
+
+  <div class="actions">
+    @if (authStore.canCreateEvent()) {
+      <a class="button" routerLink="/events/new">Create New Event</a>
+    }
+
+    <!-- TODO: If user has authority to moderate -->
+    @if (authStore.canReviewEvents()) {
+      <a class="button" routerLink="/events/review">Review Pending Events</a>
+    }
+  </div>
+
+  <div *ngIf="eventStore.loading$$(); else eventList">
+    Loading events...
+  </div>
+
+  <ng-template #eventList>
+    <app-event-list [events]="filteredEvents()" [loading]="loading" [error]="error"></app-event-list>
+  </ng-template>
+
+  <div *ngIf="eventStore.error$$()">{{ eventStore.error$$() }}</div>
+</div>
