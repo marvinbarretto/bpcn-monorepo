@@ -1,34 +1,40 @@
-import { Injectable, signal } from '@angular/core';
-import { StrapiService } from './strapi.service';
+import { Injectable, computed, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BackendHealthService {
-  private strapiAvailable$$ = signal<boolean>(false);
+  /** 
+   * Internal signal for backend availability state.
+   * `true` by default, flipped on network failure.
+   */
+  private readonly isAvailable$$ = signal(true);
 
-  readonly isStrapiAvailable$$ = this.strapiAvailable$$.asReadonly();
+  /**
+   * Public read-only signal (e.g. for components or toast service).
+   */
+  readonly isBackendAvailable = computed(() => this.isAvailable$$());
 
-  constructor(private strapiService: StrapiService) {
-    this.startHeathCheck();
+  /**
+   * Call this when a backend error like 503 or timeout occurs.
+   */
+  setBackendUnavailable(): void {
+    if (!this.isAvailable$$()) {
+      return; // Already unavailable, no need to re-trigger effects
+    }
+
+    this.isAvailable$$.set(false);
+    console.warn('🚨 Backend marked as unavailable');
+
+    // TODO: Show user-facing toast/banner
+    // this.toastService.show('The backend is temporarily unreachable.');
   }
 
-  setBackendUnavailable() {
-    this.strapiAvailable$$.set(false);
+  /**
+   * Optional: Reset status (e.g. after retry or successful ping).
+   */
+  reset(): void {
+    this.isAvailable$$.set(true);
+    console.log('✅ Backend marked as available');
   }
-
-  private checkHeath() {
-    this.strapiService.ping().subscribe({
-      next: (isAvailable) => this.strapiAvailable$$.set(isAvailable),
-      error: () => this.strapiAvailable$$.set(false)
-    });
-  }
-
-  private startHeathCheck() {
-    this.checkHeath();
-    setInterval(() => this.checkHeath(), 30000);
-    // TODO: Make this 30000 configurable
-    // TODO: Make this whole fucntionality optional as it might be expensive?
-  }
-
 }

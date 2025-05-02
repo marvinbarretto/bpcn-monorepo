@@ -1,3 +1,10 @@
+.site-header {
+  background-color: rgba(red, .1);
+}
+
+
+
+
 $header-bg-color: #333;
 $menu-bg-color: #444;
 $text-color: white;
@@ -9,7 +16,8 @@ $DESKTOP-BREAKPOINT: 1024px; // Q: Where should I centralise and get this from?
 }
 
 .header {
-  background-color: $header-bg-color;
+  // background-color: $header-bg-color;
+  background-color: rgba(red, .1);
   color: $text-color;
   text-align: center;
   display: flex;

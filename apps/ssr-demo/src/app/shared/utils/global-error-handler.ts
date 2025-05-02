@@ -1,15 +1,15 @@
-import { ErrorHandler, inject, Injectable } from "@angular/core";
-import { BackendHealthService } from "../data-access/backend-health.service";
-import { HttpErrorResponse } from "@angular/common/http";
+import { ErrorHandler, Injectable, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { BackendHealthService } from '../data-access/backend-health.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
+  // ✅ Safe lazy injection inside a method
+  private backendHealthService = inject(BackendHealthService);
 
-  handleError(error: any): void {
-    const backendHealthService = inject(BackendHealthService);
-
+  handleError(error: unknown): void {
     if (error instanceof HttpErrorResponse && (error.status === 0 || error.status === 503)) {
-      backendHealthService.setBackendUnavailable();
+      this.backendHealthService.setBackendUnavailable();
     }
 
     console.error('Error occurred:', error);

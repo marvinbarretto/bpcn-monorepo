@@ -19,7 +19,7 @@ export class UserInfoComponent {
   constructor(public authStore: AuthStore) {}
 
   get isBackendAvailable(): boolean {
-    return this.backendService.isStrapiAvailable$$();
+    return this.backendService.isBackendAvailable();
   }
 
   get isLoggedIn(): boolean {
