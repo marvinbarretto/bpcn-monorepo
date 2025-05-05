@@ -1,6 +1,4 @@
-// TODO: Standardise breakpoints
-$TABLET-BREAKPOINT: 750px; // Q: Where should I centralise and get this from?
-$DESKTOP-BREAKPOINT: 1024px; // Q: Where should I centralise and get this from?
+@use "../../../../styles/index" as *;
 
 :host {
   display: block;
@@ -20,7 +18,7 @@ $DESKTOP-BREAKPOINT: 1024px; // Q: Where should I centralise and get this from?
   padding: 0.5rem;
 }
 
-@media (min-width: $TABLET-BREAKPOINT) {
+@media (min-width: $breakpoint-TABLET) {
   .authenticate {
     justify-content: flex-end;
 

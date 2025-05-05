@@ -101,8 +101,7 @@ app.get('*', (req, res, next) => {
       publicPath: distFolder,
       providers: [
         { provide: APP_BASE_HREF, useValue: baseUrl },
-        // You can re-enable these once SSR is confirmed stable
-        // { provide: 'INITIAL_ENV', useValue: environment },
+        { provide: 'INITIAL_ENV', useValue: environment },
         { provide: 'INITIAL_AUTH_STATE', useValue: { user: null, token: null } },
       ],
     })

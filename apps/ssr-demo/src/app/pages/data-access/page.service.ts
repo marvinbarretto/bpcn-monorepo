@@ -33,14 +33,34 @@ export class PageService extends StrapiService {
     );
   }
 
+  // getPrimaryNavPageLinks(): Observable<PrimaryNavLink[]> {
+  //   console.log('inside getPrimaryNavPageLinks')
+  //   return this.get<PrimaryNavLinkResponse>(
+  //     `pages?filters[primaryNavigation][$eq]=true&fields[0]=title&fields[1]=slug`).pipe(
+  //         map(response => response.data),
+  //         catchError(this.handleError)
+  //       );
+  // }
   getPrimaryNavPageLinks(): Observable<PrimaryNavLink[]> {
-    console.log('inside getPrimaryNavPageLinks')
-    return this.get<PrimaryNavLinkResponse>(
-      `pages?filters[primaryNavigation][$eq]=true&fields[0]=title&fields[1]=slug`).pipe(
-          map(response => response.data),
-          catchError(this.handleError)
-        );
-    }
+    console.log('inside getPrimaryNavPageLinks');
+  
+    return this.get<{ data: any[] }>(
+      'pages?filters[primaryNavigation][$eq]=true&fields[0]=title&fields[1]=slug'
+    ).pipe(
+      tap(res => console.log('[Strapi] Got response with', res.data?.length ?? 0, 'items')),
+      map(res =>
+        res.data.map(item => ({
+          id: item.id,
+          documentId: item.id.toString(), // or item.attributes?.something
+          title: item.attributes?.title ?? 'Untitled',
+          slug: item.attributes?.slug ?? 'unknown'
+        }))
+      )
+    );
+  }
+}
+
+
 
 
   // NOTE: Use this syntax later for specific queries
@@ -52,5 +72,3 @@ export class PageService extends StrapiService {
   //     &populate[parentPage][fields][2]=slug`
   //   );
   // }
-
-}

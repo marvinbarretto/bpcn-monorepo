@@ -48,3 +48,5 @@ Thumbs.db
 
 # Strapi documentation
 backend/src/extensions/documentation/*
+
+.vscode/settings.json

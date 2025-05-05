@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { Page, PrimaryNavLink } from "../utils/page.model";
 import { PageService } from "./page.service";
+import { SsrPlatformService } from "./../../shared/utils/ssr/ssr-platform.service"
 
 @Injectable({
   providedIn: 'root'
@@ -10,60 +11,48 @@ import { PageService } from "./page.service";
 export class PageStore {
   page$$ = signal<Page | null>(null);
   pages$$ = signal<Page[]>([]);
-
   loading$$ = signal<boolean>(false);
   error$$ = signal<string | null>(null);
 
-
-  // primaryNavLinks$$ is a writable signal that holds the data
-  // but if we talk to it directly we will not get the reactivity
   primaryNavLinks$$ = signal<PrimaryNavLink[]>([]);
-
-  // primaryNavLinksComputed$$ is a computed signal that
-  // reactively tracks changes to primaryNavLinks$$
   primaryNavLinksComputed$$ = computed(() => this.primaryNavLinks$$());
 
+  constructor(
+    private pageService: PageService,
+    private platform: SsrPlatformService
+  ) {}
 
-
-  getPageBySlug(slug: string) {
-    return computed(() => this.pages$$().find(p => p.slug === slug));
+  private debugLog(message: string, ...args: any[]) {
+    this.platform.onlyOnBrowser(() => {
+      console.log(`%c${message}`, 'color: #888;', ...args);
+    });
   }
-
-  constructor(private pageService: PageService) {
-
-  }
-
-
-  // TODO: 1. set HTTP Cache-Control Headers on Strapi for a day 86400
 
   loadPrimaryNavLinks() {
-    if ( this.primaryNavLinks$$().length > 0 ) {
-      console.log('%cPrimary navigation pages already loaded', 'color: green');
-      console.log(this.primaryNavLinks$$());  // Output the actual list of pages
+    if (this.primaryNavLinks$$().length > 0) {
+      this.debugLog('Primary navigation pages already loaded');
+      this.debugLog('Loaded nav links:', this.primaryNavLinks$$());
       return;
     }
+  
     this.loading$$.set(true);
-
-    console.log('Making API call to fetch primary nav links...');
+    this.debugLog('📡 Fetching primary navigation pages...');
+  
     this.pageService.getPrimaryNavPageLinks().pipe(
-      tap( pages => {
-        console.log('%cAPI response:', 'color: orange');
-        console.log(pages);  // Check if pages contain valid slugs
-
-
+      tap(pages => {
         this.primaryNavLinks$$.set(pages);
-        console.log('%cPrimary navigation pages loaded:', 'color: green');
-        console.log(pages);  // Output the fetched pages after loading
-
+        this.debugLog(`✅ Loaded ${pages.length} primary nav links:`, pages);
         this.loading$$.set(false);
       }),
-      catchError((error) => {
-        this.error$$.set(`Failed to load primary navigation pages. ${error}`);
+      catchError(error => {
+        this.error$$.set(`❌ Failed to load nav links: ${error.status} ${error.statusText}`);
+        this.debugLog(`❌ Failed to load nav links: ${error.status} ${error.statusText}`, error);
         this.loading$$.set(false);
-        return of([]);
+        return of([]); // fallback
       })
     ).subscribe();
   }
+  
 
   loadPage(slug: string) {
     this.loading$$.set(true);
@@ -72,11 +61,14 @@ export class PageStore {
     this.pageService.getPageBySlug(slug).pipe(
       tap(page => {
         this.page$$.set(page);
-        console.log('Page loaded: ', this.page$$());
+        this.debugLog('Page loaded:', page);
         this.loading$$.set(false);
       }),
-      catchError((error) => {
-        this.error$$.set(`Failed to load page. ${error}`);
+      catchError(error => {
+        const msg = `Failed to load page (${error.status} - ${error.statusText})`;
+        this.debugLog(msg, error);
+
+        this.error$$.set(msg);
         this.loading$$.set(false);
         return of(null);
       })
@@ -88,29 +80,36 @@ export class PageStore {
     this.error$$.set(null);
 
     this.pageService.getPages().pipe(
-      tap( pages => {
+      tap(pages => {
         this.pages$$.set(pages);
-        console.log('Pages loaded: ', this.pages$$());
+        this.debugLog('Pages loaded:', pages);
         this.loading$$.set(false);
       }),
-      catchError((error) => {
-        this.error$$.set(`Failed to load pages. ${error}`);
+      catchError(error => {
+        const msg = `Failed to load pages (${error.status} - ${error.statusText})`;
+        this.debugLog(msg, error);
+
+        this.error$$.set(msg);
         this.loading$$.set(false);
         return of([]);
       })
     ).subscribe();
   }
 
+  getPageBySlug(slug: string) {
+    return computed(() => this.pages$$().find(p => p.slug === slug));
+  }
+
   getPrimaryNavPages(): Page[] {
-    return this.pages$$().filter( page => page.primaryNavigation === true );
+    return this.pages$$().filter(page => page.primaryNavigation === true);
   }
 
   getRootPages(): Page[] {
-    return this.pages$$().filter( page => !page.parentPage );
+    return this.pages$$().filter(page => !page.parentPage);
   }
 
   getChildPages(parentId: number): Page[] {
-    return this.pages$$().filter( page => page.parentPage?.id === parentId);
+    return this.pages$$().filter(page => page.parentPage?.id === parentId);
   }
 
   hasChildren(pageId: number): boolean {

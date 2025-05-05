@@ -1,10 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, effect } from '@angular/core';
 import { AuthStore } from '../../../auth/data-access/auth.store';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Roles } from '../../../auth/utils/roles.enum';
 import { FeatureFlagPipe } from '../../utils/feature-flag.pipe';
-import { BackendHealthService } from '../../data-access/backend-health.service';
 
 @Component({
     selector: 'app-user-info',
@@ -13,31 +11,27 @@ import { BackendHealthService } from '../../data-access/backend-health.service';
     styleUrl: './user-info.component.scss'
 })
 export class UserInfoComponent {
-  public Roles = Roles;
-  backendService = inject(BackendHealthService);
+  private readonly auth = inject(AuthStore);
 
-  constructor(public authStore: AuthStore) {}
+  readonly ready = this.auth.ready$$;
+  readonly user = this.auth.user$$;
+  readonly token = this.auth.token$$;
 
-  get isBackendAvailable(): boolean {
-    return this.backendService.isBackendAvailable();
+  readonly isLoggedIn = computed(() =>
+    this.ready() && !!this.token() && !!this.user()
+  );
+
+  readonly username = computed(() => this.user()?.username ?? 'Unknown');
+  readonly role = computed(() => this.user()?.role?.name ?? 'No role');
+
+  logout() {
+    this.auth.logout();
   }
 
-  get isLoggedIn(): boolean {
-    return !!this.authStore.token$$();
-  }
-
-  get username(): string | null {
-    return this.authStore.user$$()?.username || null;
-  }
-
-  get role(): string | null {
-    return this.authStore.user$$()?.role?.name || 'No Role';
-  }
-
-
-  // Console out the contents of authStore
-  ngOnInit() {
-    console.log('Logged in User signal', this.authStore.user$$());
-
+  // Optional debug effect
+  constructor() {
+    effect(() => {
+      console.log('[UserInfo] ready:', this.ready(), 'isLoggedIn:', this.isLoggedIn());
+    });
   }
 }

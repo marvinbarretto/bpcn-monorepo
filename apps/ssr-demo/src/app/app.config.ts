@@ -5,9 +5,11 @@ import {
   provideClientHydration,
   withEventReplay,
 } from '@angular/platform-browser';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { GlobalErrorHandler } from './shared/utils/global-error-handler';
+import { authInterceptor } from './auth/data-access/auth.interceptor';
+import { provideAuthInitializer } from './auth/data-access/auth-initializer';
 
 console.log('✅ Loading app.config.ts...');
 
@@ -16,7 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
-    provideHttpClient(withFetch()),
+    provideAuthInitializer(),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: 'environment', useValue: environment } // 
   ],

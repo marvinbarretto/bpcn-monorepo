@@ -1,40 +1,82 @@
-import { Injectable, signal, inject } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
-import { PLATFORM_ID } from "@angular/core";
-import { Router } from "@angular/router";
-import { of } from 'rxjs';
-import { tap, catchError, take } from 'rxjs/operators';
-import { User } from "../../users/utils/user.model";
-import { AuthResponse, RegisterPayload } from "../utils/auth.model";
 import { Roles } from "../utils/roles.enum";
+import { AuthResponse, RegisterPayload } from "../utils/auth.model";
 import { AuthService } from "./auth.service";
 import { UserService } from "../../users/data-access/user.service";
+import { CookieService } from "../../shared/data-access/cookie.service";
+import { SsrPlatformService } from "../../shared/utils/ssr/ssr-platform.service";
+import { Injectable, inject, signal } from "@angular/core";
+import { Router } from "@angular/router";
+import { tap, take, catchError } from "rxjs/operators";
+import { User } from "../../users/utils/user.model";
+import { of } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
-  private readonly platformId = inject(PLATFORM_ID);
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
+  private readonly cookieService = inject(CookieService);
+  private readonly ssr = inject(SsrPlatformService); // Replaces PLATFORM_ID
   private readonly router = inject(Router);
 
   user$$ = signal<User | null>(null);
   token$$ = signal<string | null>(null);
   loading$$ = signal<boolean>(false);
   error$$ = signal<string | null>(null);
+  ready$$ = signal<boolean>(false);
 
   constructor() {
-    if (isPlatformBrowser(this.platformId)) {
+    this.ssr.onlyOnBrowser(() => {
+      const token = this.cookieService.getCookie('authToken');
+      console.log('[AuthStore] Bootstrapping from cookie — token:', token);
+  
+      const user = localStorage.getItem('user');
+      console.log('[AuthStore] Bootstrapping from localStorage — user:', user);
+  
       this.loadUserFromStorage();
-    }
+    });
   }
 
+  bootstrapFromCookie(): void {
+    if (!this.ssr.isBrowser) return;
+  
+    const token = this.cookieService.getCookie('authToken');
+    const user = localStorage.getItem('user');
+  
+    if (token) {
+      this.token$$.set(token);
+  
+      if (user) {
+        this.user$$.set(JSON.parse(user));
+      } else {
+        this.userService.getUserDetails().subscribe((user: User) => {
+          this.user$$.set(user);
+          localStorage.setItem('user', JSON.stringify(user));
+        });
+      }
+    } else {
+      this.token$$.set(null);
+      this.user$$.set(null);
+    }
+  
+    this.ready$$.set(true);
+  }
+  
+
   private loadUserFromStorage() {
-    const token = localStorage.getItem('authToken');
+    const token = this.cookieService.getCookie('authToken');
     const user = localStorage.getItem('user');
 
-    if (token && user) {
+    if (token) {
       this.token$$.set(token);
-      this.user$$.set(JSON.parse(user));
+
+      if (user) {
+        this.user$$.set(JSON.parse(user));
+      } else {
+        this.userService.getUserDetails().subscribe((user: User) => {
+          this.user$$.set(user);
+          localStorage.setItem('user', JSON.stringify(user));
+        });
+      }
     }
   }
 
@@ -54,10 +96,11 @@ export class AuthStore {
   }
 
   logout() {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('authToken');
+    this.cookieService.deleteCookie('authToken');
+
+    this.ssr.onlyOnBrowser(() => {
       localStorage.removeItem('user');
-    }
+    });
 
     this.token$$.set(null);
     this.user$$.set(null);
@@ -82,17 +125,14 @@ export class AuthStore {
 
   private handleLoginSuccess(response: AuthResponse) {
     this.token$$.set(response.jwt);
-
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('authToken', response.jwt);
-    }
+    this.cookieService.setCookie('authToken', response.jwt);
 
     this.userService.getUserDetails().subscribe((user: User) => {
       this.user$$.set(user);
 
-      if (isPlatformBrowser(this.platformId)) {
+      this.ssr.onlyOnBrowser(() => {
         localStorage.setItem('user', JSON.stringify(user));
-      }
+      });
 
       this.loading$$.set(false);
       this.error$$.set(null);

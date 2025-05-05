@@ -23,6 +23,9 @@
           }
         ],
         "styles": ["apps/ssr-demo/src/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/ssr-demo/src/styles"]
+        },
         "scripts": []
       },
       "configurations": {

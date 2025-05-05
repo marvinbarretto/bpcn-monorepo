@@ -16,5 +16,4 @@ export interface User {
     description: string;
     type: string;
   };
-  // TODO: Type this up, roles should be defined
 }

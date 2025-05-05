@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   enableAllFeaturesInDevelopment: true,
   strapiUrl: 'http://127.0.0.1:1337',
-  strapiToken: 'c78fa012ab669ffed61957a2595d01e2f73b2799c7db29c94dbe1a8b5f17ac85ffdc86c6fce344c4a6afe6362875614b71aa70d7a9ca6c80654dfafe62b1ab35d426ad22250b827cf3f0f3eaca63b188e9af4ac47f318149ae09a43f0559a83080e64c486d6c996fc2998008105f2d8c2ae64aee1a4ec30f5c2bbedbf28bc20a',
+  strapiToken: '252a3d884c31d81b657a03aeb3156435abf1df111acfc6325679b053bb12b0500edb74904910190cdd66b2eeb54f21751b08749df7716b8b8a1071b356b21f65a8f04732a4d235274bfa21dc57bfe3ce5cf3ebbcc2d13527cba66f4d005cd955e1d939ee323c51e34859f7cfccbcd483f6cbc47cd5667a3957a84ef6c90175c2',
   featureFlags: {
     homepageHero: false,
     homepageNewsWidget: false,
