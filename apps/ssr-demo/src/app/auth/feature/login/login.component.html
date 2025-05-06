@@ -1,10 +1,12 @@
 <div class="login">
   <h1>Login</h1>
   <div class="quick-login">
-    <button (click)="authStore.login('authenticated@test.com', 'password123')">Login as Authenticated</button><br>
-    <button (click)="authStore.login('author@test.com', 'password123')">Login as Author</button><br>
+    <button (click)="authStore.login('auth@test.com', 'password123')">Login as Authenticated</button>
+    <button (click)="authStore.login('author@test.com', 'password123')">Login as Author</button>
     <button (click)="authStore.login('admin@test.com', 'password123')">Login as Admin</button>
   </div>
+  
+
 
 
   <form (ngSubmit)="onLogin()">

@@ -1,3 +1,13 @@
+## Common commands
+- `nx serve strapi` - Start the Strapi server
+- `rm -rf apps/strapi/.tmp/data.db` - Delete the database (SQLite)
+
+
+## Seeding users
+- Check `STRAPI_SEEDER_TOKEN` is set in `apps/strapi/.env`
+- Manually add `Admin` and `Author` roles if missing (will be on a fresh boot)
+- `npx ts-node apps/strapi/scripts/seed-users.ts`
+
 # 🚀 Getting started with Strapi
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.

@@ -21,6 +21,7 @@
 
 .quick-login {
   display: flex;
+  flex-direction: column;
   gap: .5rem;
   justify-content: space-between;
 }
