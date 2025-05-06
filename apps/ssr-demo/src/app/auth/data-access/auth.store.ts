@@ -1,3 +1,6 @@
+// The idea is that this store is the single source of truth for authentication state
+
+
 import { Roles } from "../utils/roles.enum";
 import { AuthResponse, RegisterPayload } from "../utils/auth.model";
 import { AuthService } from "./auth.service";
@@ -40,29 +43,33 @@ export class AuthStore {
     if (!this.ssr.isBrowser) return;
   
     const token = this.cookieService.getCookie('authToken');
-    const user = localStorage.getItem('user');
-  
-    if (token) {
-      this.token$$.set(token);
-  
-      if (user) {
-        this.user$$.set(JSON.parse(user));
-      } else {
-        this.userService.getUserDetails().subscribe((user: User) => {
-          this.user$$.set(user);
-          localStorage.setItem('user', JSON.stringify(user));
-        });
-      }
-    } else {
+    if (!token) {
       this.token$$.set(null);
       this.user$$.set(null);
+      this.ready$$.set(true);
+      return;
     }
   
-    this.ready$$.set(true);
+    this.token$$.set(token);
+  
+    this.userService.getUserDetails().subscribe({
+      next: (user) => {
+        this.user$$.set(user);
+        localStorage.setItem('user', JSON.stringify(user));
+      },
+      error: () => {
+        this.user$$.set(null);
+      },
+      complete: () => {
+        this.ready$$.set(true);
+      }
+    });
   }
   
 
   private loadUserFromStorage() {
+    if (!this.ssr.isBrowser) return;
+    
     const token = this.cookieService.getCookie('authToken');
     const user = localStorage.getItem('user');
 
@@ -126,23 +133,24 @@ export class AuthStore {
   private handleLoginSuccess(response: AuthResponse) {
     this.token$$.set(response.jwt);
     this.cookieService.setCookie('authToken', response.jwt);
-
-    this.userService.getUserDetails().subscribe((user: User) => {
-      this.user$$.set(user);
-
-      this.ssr.onlyOnBrowser(() => {
-        localStorage.setItem('user', JSON.stringify(user));
-      });
-
-      this.loading$$.set(false);
-      this.error$$.set(null);
-
-      this.router.navigate(['/']);
-    }, (error: any) => {
-      this.error$$.set(`Login failed ${error}`);
-      this.loading$$.set(false);
+  
+    this.userService.getUserDetails().subscribe({
+      next: (user) => {
+        this.user$$.set(user);
+        this.ssr.onlyOnBrowser(() => {
+          localStorage.setItem('user', JSON.stringify(user));
+        });
+        this.loading$$.set(false);
+        this.error$$.set(null);
+        this.router.navigate(['/']);
+      },
+      error: (error: any) => {
+        this.error$$.set(`Login failed ${error}`);
+        this.loading$$.set(false);
+      }
     });
   }
+  
 
   isAuthenticated(): boolean {
     return !!this.token$$();

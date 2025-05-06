@@ -1,6 +1,6 @@
-import { computed, Injectable, signal } from "@angular/core";
+import { computed, inject, Injectable, signal } from "@angular/core";
 import { of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, finalize } from 'rxjs/operators';
 import { Page, PrimaryNavLink } from "../utils/page.model";
 import { PageService } from "./page.service";
 import { SsrPlatformService } from "./../../shared/utils/ssr/ssr-platform.service"
@@ -9,18 +9,20 @@ import { SsrPlatformService } from "./../../shared/utils/ssr/ssr-platform.servic
   providedIn: 'root'
 })
 export class PageStore {
-  page$$ = signal<Page | null>(null);
-  pages$$ = signal<Page[]>([]);
-  loading$$ = signal<boolean>(false);
-  error$$ = signal<string | null>(null);
+  private readonly pageService = inject(PageService);
+  private readonly platform = inject(SsrPlatformService);
 
-  primaryNavLinks$$ = signal<PrimaryNavLink[]>([]);
-  primaryNavLinksComputed$$ = computed(() => this.primaryNavLinks$$());
+  readonly page$$ = signal<Page | null>(null);
+  readonly pages$$ = signal<Page[]>([]);
+  readonly primaryNavLinks$$ = signal<PrimaryNavLink[]>([]);
+  
+  readonly loading$$ = signal<boolean>(false);
+  readonly error$$ = signal<string | null>(null);
+  readonly ready$$ = signal<boolean>(false);
 
-  constructor(
-    private pageService: PageService,
-    private platform: SsrPlatformService
-  ) {}
+  constructor() {
+    this.debugLog('📦 PageStore constructed');
+  }
 
   private debugLog(message: string, ...args: any[]) {
     this.platform.onlyOnBrowser(() => {
@@ -28,73 +30,75 @@ export class PageStore {
     });
   }
 
-  loadPrimaryNavLinks() {
+  loadPrimaryNavLinks(): void {
     if (this.primaryNavLinks$$().length > 0) {
-      this.debugLog('Primary navigation pages already loaded');
-      this.debugLog('Loaded nav links:', this.primaryNavLinks$$());
+      this.debugLog('🔁 Nav links already loaded:', this.primaryNavLinks$$());
       return;
     }
-  
+
+    this.debugLog('📡 Fetching primary nav links...');
     this.loading$$.set(true);
-    this.debugLog('📡 Fetching primary navigation pages...');
-  
+
     this.pageService.getPrimaryNavPageLinks().pipe(
-      tap(pages => {
-        this.primaryNavLinks$$.set(pages);
-        this.debugLog(`✅ Loaded ${pages.length} primary nav links:`, pages);
-        this.loading$$.set(false);
+      tap(links => {
+        this.primaryNavLinks$$.set(links);
+        this.debugLog('✅ Nav links loaded:', links);
       }),
       catchError(error => {
-        this.error$$.set(`❌ Failed to load nav links: ${error.status} ${error.statusText}`);
-        this.debugLog(`❌ Failed to load nav links: ${error.status} ${error.statusText}`, error);
-        this.loading$$.set(false);
-        return of([]); // fallback
-      })
-    ).subscribe();
-  }
-  
-
-  loadPage(slug: string) {
-    this.loading$$.set(true);
-    this.error$$.set(null);
-
-    this.pageService.getPageBySlug(slug).pipe(
-      tap(page => {
-        this.page$$.set(page);
-        this.debugLog('Page loaded:', page);
-        this.loading$$.set(false);
-      }),
-      catchError(error => {
-        const msg = `Failed to load page (${error.status} - ${error.statusText})`;
+        const msg = `❌ Failed to load nav links (${error.status} ${error.statusText})`;
         this.debugLog(msg, error);
-
         this.error$$.set(msg);
-        this.loading$$.set(false);
-        return of(null);
-      })
+        return of([]);
+      }),
+      finalize(() => this.loading$$.set(false))
     ).subscribe();
   }
 
-  loadPages() {
+  loadPages(): void {
+    if (this.pages$$().length > 0) {
+      this.debugLog('🔁 Pages already loaded');
+      return;
+    }
+
     this.loading$$.set(true);
     this.error$$.set(null);
 
     this.pageService.getPages().pipe(
       tap(pages => {
         this.pages$$.set(pages);
-        this.debugLog('Pages loaded:', pages);
-        this.loading$$.set(false);
+        this.ready$$.set(true);
+        this.debugLog('✅ Pages loaded:', pages);
       }),
       catchError(error => {
-        const msg = `Failed to load pages (${error.status} - ${error.statusText})`;
-        this.debugLog(msg, error);
-
+        const msg = `❌ Failed to load pages (${error.status} ${error.statusText})`;
         this.error$$.set(msg);
-        this.loading$$.set(false);
+        this.debugLog(msg, error);
         return of([]);
-      })
+      }),
+      finalize(() => this.loading$$.set(false))
     ).subscribe();
   }
+
+  loadPage(slug: string): void {
+    this.loading$$.set(true);
+    this.error$$.set(null);
+
+    this.pageService.getPageBySlug(slug).pipe(
+      tap(page => {
+        this.page$$.set(page);
+        this.debugLog('✅ Page loaded:', page);
+      }),
+      catchError(error => {
+        const msg = `❌ Failed to load page (${error.status} - ${error.statusText})`;
+        this.error$$.set(msg);
+        this.debugLog(msg, error);
+        return of(null);
+      }),
+      finalize(() => this.loading$$.set(false))
+    ).subscribe();
+  }
+
+  // --------- Derived Getters ----------
 
   getPageBySlug(slug: string) {
     return computed(() => this.pages$$().find(p => p.slug === slug));
@@ -116,3 +120,4 @@ export class PageStore {
     return this.getChildPages(pageId).length > 0;
   }
 }
+

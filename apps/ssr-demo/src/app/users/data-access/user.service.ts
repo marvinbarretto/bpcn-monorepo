@@ -12,7 +12,7 @@ export class UserService extends StrapiService {
     return this.get<User[]>('users?populate=role');
   }
 
-  getUserDetails(): any {
+  getUserDetails(): Observable<User> {
     return this.get<User>('users/me?populate=role');
   }
 }

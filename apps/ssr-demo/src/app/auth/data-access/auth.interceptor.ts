@@ -20,6 +20,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         Authorization: `Bearer ${token}`
       }
     });
+
+    // console.log('➡️ Final request URL:', req.urlWithParams);
+    // console.log('➡️ Final headers:', req.headers);
+
   } else {
     console.log('🚫 No token attached for request:', req.url);
   }

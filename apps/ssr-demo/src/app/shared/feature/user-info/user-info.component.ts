@@ -3,6 +3,7 @@ import { AuthStore } from '../../../auth/data-access/auth.store';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FeatureFlagPipe } from '../../utils/feature-flag.pipe';
+import { UserService } from '../../../users/data-access/user.service';
 
 @Component({
     selector: 'app-user-info',
@@ -28,10 +29,13 @@ export class UserInfoComponent {
     this.auth.logout();
   }
 
-  // Optional debug effect
   constructor() {
     effect(() => {
+      if (!this.ready()) return;
+
       console.log('[UserInfo] ready:', this.ready(), 'isLoggedIn:', this.isLoggedIn());
+      console.log('[UserInfo] user:', this.user());
+      console.log('[UserInfo] token:', this.token());
     });
   }
 }

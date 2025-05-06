@@ -2,8 +2,8 @@
   <section *ngIf="isLoggedIn(); else unauthenticatedBlock" class="user-info">
     <div class="user-info__details">
       <span class="material-symbols-outlined">person</span>
-      <span class="username">Username: {{ username() }}</span>
-      <span class="role">Role: {{ role() }}</span>
+      <span class="username">{{ username() }}</span>
+      <span class="role">{{ role() }}</span>
     </div>
     <button (click)="logout()">Logout</button>
   </section>
