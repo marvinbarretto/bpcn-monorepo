@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StrapiService } from '../../shared/data-access/strapi.service';
 import { Page, PageResponse, PrimaryNavLink } from '../utils/page.model';
 import { catchError, map, tap, Observable, of } from 'rxjs';
-import { StrapiResponse, PageAttributes } from '../../shared/utils/strapi.model';
+import { StrapiPageResponse } from '../../shared/utils/strapi.model';
 import { HttpParams } from '@angular/common/http';
 
 @Injectable({
@@ -45,14 +45,17 @@ export class PageService extends StrapiService {
     .set('fields[0]', 'title')
     .set('fields[1]', 'slug');
     
-    return this.get<StrapiResponse<PageAttributes>>('pages', { params }).pipe(
-      tap(res => console.log('[Strapi] Got response with', res.data.length, 'items')),
+    return this.get<StrapiPageResponse>('pages', { params }).pipe(
+      tap(res => {
+        console.log('[Strapi] Got response with', res.data.length, 'items');
+        console.log('[Strapi] Sample item:', res.data[0]);
+      }),
       map(res =>
         res.data.map(item => ({
           id: item.id,
           documentId: item.id.toString(),
-          title: item.attributes.title,
-          slug: item.attributes.slug,
+          title: item.title,
+          slug: item.slug,
         }))
       )
     );
