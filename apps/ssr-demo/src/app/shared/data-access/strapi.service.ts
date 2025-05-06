@@ -9,18 +9,24 @@ import { environment } from '../../../environments/environment';
 })
 export class StrapiService {
   protected http = inject(HttpClient);
+  protected baseUrl = environment.strapiUrl;
 
-  private readonly baseUrl = environment.strapiUrl;
-
-  get<T>(endpoint: string): Observable<T> {
+  protected get<T>(
+    endpoint: string,
+    options?: { params?: any; headers?: any }
+  ): Observable<T> {
     return this.http
-      .get<T>(`${this.baseUrl}/api/${endpoint}`)
+      .get<T>(`${this.baseUrl}/api/${endpoint}`, options)
       .pipe(catchError(this.handleError));
   }
 
-  post<T>(endpoint: string, body: any): Observable<T> {
+  protected post<T>(
+    endpoint: string,
+    body: any,
+    options?: { params?: any; headers?: any }
+  ): Observable<T> {
     return this.http
-      .post<T>(`${this.baseUrl}/api/${endpoint}`, body)
+      .post<T>(`${this.baseUrl}/api/${endpoint}`, body, options)
       .pipe(catchError(this.handleError));
   }
 
