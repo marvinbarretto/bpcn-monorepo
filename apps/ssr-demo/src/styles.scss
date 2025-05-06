@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'styles/abstracts/variables';
+@use 'styles/abstracts/breakpoints';
+@use 'styles/abstracts/mixins';
+
+@use 'styles/base/reset';
+@use 'styles/base/typography';
+
+@use 'styles/layout/container';
+@use 'styles/utilities/helpers';
+
+
+
+
+body {
+    font-size: var(--font-size);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+}

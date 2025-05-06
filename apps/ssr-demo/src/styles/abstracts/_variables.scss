@@ -1,0 +1,11 @@
+// abstracts/_variables.scss
+:root {
+    --font-size: 16px;
+    --background-color: #FFFFEE;
+    --text-color: #333333;
+    --line-height: 1.5;
+    --letter-spacing: 0.2px;
+    --accent-color: #009999;
+    --icon-size: calc(var(--font-size) * 1.5);
+    --button-padding: calc(var(--font-size) * 0.5);
+}

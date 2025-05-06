@@ -1,0 +1,22 @@
+:root {
+    --font-size: 16px;
+    --line-height: 1.5;
+    --letter-spacing: 0.015em;
+  }
+  
+body {
+    font-family: 'Atkinson Hyperlegible', 'Helvetica', sans-serif;
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+    color: var(--text-color, #333);
+}
+
+h1, h2, h3, h4, h5, h6 {
+font-weight: bold;
+line-height: 1.2;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }

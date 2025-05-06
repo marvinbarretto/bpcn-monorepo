@@ -1,0 +1,12 @@
+// abstracts/_breakpoints.scss
+$breakpoint-tablet: 750px;
+$breakpoint-desktop: 1024px;
+
+@mixin respond-above($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+
+// TODO: lets investigate this, shouldnt breakpoints for actual defined things, other than that we should be fluid and let things scale

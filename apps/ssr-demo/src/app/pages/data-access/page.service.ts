@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StrapiService } from '../../shared/data-access/strapi.service';
 import { Page, PageResponse, PrimaryNavLink } from '../utils/page.model';
 import { catchError, map, tap, Observable, of } from 'rxjs';
-import { StrapiPageResponse } from '../../shared/utils/strapi.model';
+import { StrapiPageResponse } from '../../shared/utils/strapi.types';
 import { HttpParams } from '@angular/common/http';
 
 @Injectable({

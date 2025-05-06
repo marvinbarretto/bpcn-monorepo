@@ -1,3 +1,6 @@
+@use "../../../../styles/index" as *;
+
+
 .site-header {
   background-color: rgba(red, .1);
 }
@@ -8,8 +11,6 @@
 $header-bg-color: #333;
 $menu-bg-color: #444;
 $text-color: white;
-$TABLET-BREAKPOINT: 750px; // Q: Where should I centralise and get this from?
-$DESKTOP-BREAKPOINT: 1024px; // Q: Where should I centralise and get this from?
 
 :host {
   display: block;
@@ -38,7 +39,7 @@ $DESKTOP-BREAKPOINT: 1024px; // Q: Where should I centralise and get this from?
 
 .label {
   display: none;
-  @media (min-width: $TABLET-BREAKPOINT) {
+  @media (min-width: $breakpoint-TABLET) {
     display: block;
   }
 }
@@ -55,7 +56,7 @@ $DESKTOP-BREAKPOINT: 1024px; // Q: Where should I centralise and get this from?
 }
 
 .menu__list {
-  @media (min-width: $TABLET-BREAKPOINT) {
+  @media (min-width: $breakpoint-TABLET) {
     display: flex;
   }
 }
@@ -111,7 +112,7 @@ nav ul {
   gap: .25rem;
   align-items: center;
   justify-content: flex-start;
-  @media (min-width: $TABLET-BREAKPOINT) {
+  @media (min-width: $breakpoint-TABLET) {
     display: none;
   }
   &:hover {
