@@ -1,5 +1,5 @@
 import { Component, inject, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute, NavigationEnd, NavigationStart } from '@angular/router';
 import { HeaderComponent } from "./shared/feature/header/header.component";
 import { FooterComponent } from './shared/feature/footer/footer.component';
 import { filter, mergeMap } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { ThemeSelectorComponent } from "./shared/feature/theme-selector/theme-se
 import { PanelStore } from './shared/ui/panel/panel.store';
 import { NavComponent } from "./shared/feature/nav/nav.component";
 import { SearchComponent } from "./shared/feature/search/search.component";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 // @Component({
 //   selector: 'app-root',
 //   imports: [RouterModule, HeaderComponent, FooterComponent, CommonModule],
@@ -65,11 +66,19 @@ import { SearchComponent } from "./shared/feature/search/search.component";
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  private readonly router = inject(Router);
   readonly panelStore = inject(PanelStore);
   
   constructor() {
     console.log('✅ AppComponent constructor running');
 
-    
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationStart => event instanceof NavigationStart),
+        takeUntilDestroyed()
+      )
+      .subscribe(() => {
+        this.panelStore.close();
+      });
   }
 }
