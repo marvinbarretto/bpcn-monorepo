@@ -98,8 +98,12 @@
         "outputPath": "dist/apps/ssr-demo/server",
         "main": "apps/ssr-demo/src/server.ts",
         "tsConfig": "apps/ssr-demo/tsconfig.server.json",
-        "inlineStyleLanguage": "scss"
+        "inlineStyleLanguage": "scss",
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/ssr-demo/src"]
+        }
       },
+      
       "configurations": {
         "production": {
           "outputHashing": "media"
