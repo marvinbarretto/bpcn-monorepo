@@ -1,0 +1,22 @@
+ul {
+    background-color: rgba(green, .1);
+}
+
+.desktop {
+    display: flex;
+    background-color: beige;
+}
+
+a { 
+    display: block;
+    text-decoration: underline;
+    text-decoration-thickness: max(1px, 0.0625rem);
+    text-underline-offset: 0.3em;
+    padding: 0.5rem;
+    font-size: 1rem;
+    line-height: 1;
+
+    &:hover {
+        background-color: red;
+    }
+}

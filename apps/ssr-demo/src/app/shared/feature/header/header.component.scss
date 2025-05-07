@@ -5,10 +5,14 @@
   background-color: rgba(red, .1);
 }
 
+a, button {
+  font-size: 1rem;
+  line-height: 1;
+
+}
 
 nav {
   display: flex;
-  background-color: rgba(red, .1);
 }
 
 $header-bg-color: #333;

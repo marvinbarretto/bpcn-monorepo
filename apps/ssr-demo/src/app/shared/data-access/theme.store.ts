@@ -1,4 +1,4 @@
-import { signal, computed, effect } from '@angular/core';
+import { signal, computed, effect, Injectable } from '@angular/core';
 import { inject } from '@angular/core';
 import { CookieService } from './cookie.service';
 import { SsrPlatformService } from '../utils/ssr/ssr-platform.service';
@@ -6,6 +6,9 @@ import { Theme, ThemeType, defaultTheme, themeTokens } from '../utils/theme.toke
 
 const THEME_COOKIE_KEY = 'userTheme';
 
+@Injectable({
+  providedIn: 'root'
+})
 export class ThemeStore {
   private readonly cookie = inject(CookieService);
   private readonly platform = inject(SsrPlatformService);

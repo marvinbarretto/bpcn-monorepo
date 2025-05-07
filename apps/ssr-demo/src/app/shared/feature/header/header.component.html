@@ -26,7 +26,7 @@ class="main-nav"
   Search
 </button>
 
-<button #panelTrigger aria-expanded="true" (click)="openPanel('nav')" class="theme-link">
+<button *ngIf="isMobile$$()" #panelTrigger aria-expanded="true" (click)="openPanel('nav')" class="theme-link">
   ☰ Menu
 </button>
 

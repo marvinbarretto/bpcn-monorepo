@@ -1,4 +1,4 @@
-<ul class="menu__list" [class.mobile]="isMobile$$()">
+<ul class="menu__list" [class.mobile]="isMobile$$()" [class.desktop]="!isMobile$$()">
     <li><a routerLink="/" >Home</a></li>
     <li><a routerLink="/news" >News</a></li>
     <li><a routerLink="/events" >Events</a></li>
