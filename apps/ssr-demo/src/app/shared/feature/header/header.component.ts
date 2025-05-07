@@ -74,6 +74,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   @ViewChild('headerRef', { static: false }) headerRef!: ElementRef;
 
   private updatePanelOrigin() {
+    if (this.ssr.isServer) return;
+
     const rect = this.headerRef?.nativeElement?.getBoundingClientRect();
     const offsetY = rect.bottom + window.scrollY; // in case page is scrolled
     this.panelStore.setOriginY(offsetY);
@@ -85,6 +87,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   
 
   openPanel(theme: PanelType) {
+    if (this.ssr.isServer) return;
+
     const button = this.panelTriggerRef?.nativeElement as HTMLElement;
 
     // Get distance from top of page to bottom of button

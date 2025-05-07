@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import axios from 'axios';
-import { redisClient } from '../redis/redis.client'
+import { getRedisClient } from '../redis/redis.client'
 import { checkCache } from '../middleware/check-cache.middleware';
 
 const router = Router();
@@ -13,7 +13,8 @@ router.get('/api/news', checkCache, async (req, res) => {
     console.log('🔄 Fetching fresh RSS feed');
     const response = await axios.get(rssUrl);
 
-    await redisClient.setEx('newsData', NEWS_CACHE_TTL, JSON.stringify(response.data));
+    const redis = await getRedisClient();
+    await redis.setEx('newsData', NEWS_CACHE_TTL, JSON.stringify(response.data));
     console.log('✅ Cached new data in Redis');
 
     res.send(response.data);

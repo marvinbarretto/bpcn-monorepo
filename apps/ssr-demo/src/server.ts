@@ -13,6 +13,7 @@ import { existsSync } from 'node:fs';
 import bootstrap from './main.server';
 import dotenv from 'dotenv';
 import { getRedisClient } from '../server/redis/redis.client';
+import newsRoute from '../server/routes/news.route';
 
 // Load environment variables
 dotenv.config();
@@ -57,6 +58,18 @@ app.use(
   })
 );
 
+// === Custom Redis route (example) ===
+console.log('🔧 Setting up custom Redis route...');
+app.get('/api/test-redis', async (req: Request, res: Response) => {
+  const redis = await getRedisClient();
+  await redis.set('hello', 'world');
+  const value = await redis.get('hello');
+  res.json({ message: 'Redis is working', value });
+});
+
+console.log('🔧 Setting up news route...');
+app.use(newsRoute);
+
 // === Static assets ===
 console.log('🔧 Setting up static assets middleware...');
 app.get(
@@ -66,14 +79,6 @@ app.get(
   })
 );
 
-// === Custom Redis route (example) ===
-console.log('🔧 Setting up custom Redis route...');
-app.get('/api/test-redis', async (req: Request, res: Response) => {
-  const redis = await getRedisClient();
-  await redis.set('hello', 'world');
-  const value = await redis.get('hello');
-  res.json({ message: 'Redis is working', value });
-});
 
 // === SSR render ===
 console.log('🔧 Setting up SSR render middleware...');

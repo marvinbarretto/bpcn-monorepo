@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { redisClient } from '../redis/redis.client';
+import { getRedisClient } from '../redis/redis.client';
 
 export async function checkCache(req: Request, res: Response, next: NextFunction) {
   try {
-    const data = await redisClient.get('newsData');
+    const redis = await getRedisClient();
+    const data = await redis.get('newsData');
     if (data) {
       console.log('✅ Served from Redis cache');
       res.send(JSON.parse(data));

@@ -18,7 +18,7 @@ export class AuthStore {
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly cookieService = inject(CookieService);
-  private readonly ssr = inject(SsrPlatformService); // Replaces PLATFORM_ID
+  private readonly ssr = inject(SsrPlatformService);
   private readonly router = inject(Router);
 
   user$$ = signal<User | null>(null);

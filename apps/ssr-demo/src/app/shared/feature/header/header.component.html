@@ -1,39 +1,34 @@
 <div class="site-header" #headerRef>
+  
+  <!-- TODO: Make a site-header inner UI component -->
   <ng-container *ngIf="!isHomepage$$(); else titleWithoutLink">
     <a routerLink="/" class="header__title">
       <h1>Black Prostate Cancer Network</h1>
     </a>
   </ng-container>
-
   <ng-template #titleWithoutLink>
     <h1 class="header__title">Black Prostate Cancer Network</h1>
   </ng-template>
 
   <app-user-info></app-user-info>
 
-  
-<nav
-class="main-nav"
-[class.nav-mobile]="isMobile$$()"
->
+  <nav class="main-nav" [class.nav-mobile]="isMobile$$()">
+    <button #panelTrigger aria-expanded="true" (click)="openPanel('theme')" class="theme-link">
+      🎨 Theme
+    </button>
 
-<button #panelTrigger aria-expanded="true" (click)="openPanel('theme')" class="theme-link">
-  🎨 Theme
-</button>
+    <button #panelTrigger aria-expanded="true" (click)="openPanel('search')" class="theme-link">
+      Search
+    </button>
 
+    <button *ngIf="isMobile$$()" #panelTrigger aria-expanded="true" (click)="openPanel('nav')" class="theme-link">
+      ☰ Menu
+    </button>
 
-<button #panelTrigger aria-expanded="true" (click)="openPanel('search')" class="theme-link">
-  Search
-</button>
+    <app-nav *ngIf="!isMobile$$()" />
+  </nav>
+</div>
 
-<button *ngIf="isMobile$$()" #panelTrigger aria-expanded="true" (click)="openPanel('nav')" class="theme-link">
-  ☰ Menu
-</button>
-
-
-
-
-<app-nav *ngIf="!isMobile$$()" />
 
 
 <!-- TODO: Convert to SSR-friendly and restore -->
@@ -56,6 +51,3 @@ class="main-nav"
   (close)="overlayService.hideOverlay()"
 ></app-accessibility>
 -->
-</nav>
-</div>
-

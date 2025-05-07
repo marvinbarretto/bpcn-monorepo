@@ -12,7 +12,7 @@ export class NewsService {
   constructor(private http: HttpClient) { }
 
   getNews(): Observable<NewsSnippet[]> {
-    return this.http.get('http://localhost:3000/api/news', { responseType: 'text' }).pipe(
+    return this.http.get('/api/news', { responseType: 'text' }).pipe(
       map((rssData: string) => {
         return this.parseXML(rssData);
       }),

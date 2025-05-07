@@ -32,6 +32,7 @@
     "dotenv": "16.5.0",
     "express": "4.21.2",
     "express-rate-limit": "7.5.0",
+    "fast-xml-parser": "5.2.2",
     "highcharts": "11.4.8",
     "highcharts-angular": "4.0.1",
     "pg": "8.13.1",
