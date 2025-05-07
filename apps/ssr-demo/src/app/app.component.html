@@ -4,17 +4,9 @@
   </div>
 </ng-container> -->
 
-
-<!-- <div [attr.aria-hidden]="overlayService.getActiveOverlay() ? 'true' : null" class="container"> -->
-  <!-- <header>
-    <app-header></app-header>
-  </header>
-  <main>
-    <router-outlet></router-outlet>
-  </main>
-  <app-footer></app-footer> -->
-  <!-- <router-outlet></router-outlet> -->
-<!-- </div> -->
-
-
-<router-outlet></router-outlet>
+<app-header />
+  <router-outlet></router-outlet>
+  <app-footer />
+  <app-panel>
+    <app-theme-selector *ngIf="panelStore.activePanel() === 'theme'">></app-theme-selector>
+</app-panel>

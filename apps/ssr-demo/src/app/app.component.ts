@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from "./shared/feature/header/header.component";
 import { FooterComponent } from './shared/feature/footer/footer.component';
@@ -9,6 +9,9 @@ import { BackendHealthService } from './shared/data-access/backend-health.servic
 import { CommonModule, isPlatformServer } from '@angular/common';
 import { UserPreferencesStore } from './shared/data-access/user-preferences.store';
 import { OverlayService } from './shared/data-access/overlay.service';
+import { PanelComponent } from './shared/ui/panel/panel.component';
+import { ThemeSelectorComponent } from "./shared/feature/theme-selector/theme-selector.component";
+import { PanelStore } from './shared/ui/panel/panel.store';
 // @Component({
 //   selector: 'app-root',
 //   imports: [RouterModule, HeaderComponent, FooterComponent, CommonModule],
@@ -56,17 +59,16 @@ import { OverlayService } from './shared/data-access/overlay.service';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, HeaderComponent, FooterComponent],
+  imports: [RouterModule, HeaderComponent, FooterComponent, PanelComponent, ThemeSelectorComponent, CommonModule],
   selector: 'app-root',
-  template: `
-    <app-header />
-    <router-outlet></router-outlet>
-    <app-footer />
-    
-  `,
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
+  readonly panelStore = inject(PanelStore);
+  
   constructor() {
     console.log('✅ AppComponent constructor running');
+
+    
   }
 }

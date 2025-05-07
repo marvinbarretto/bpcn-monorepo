@@ -1,4 +1,4 @@
-<div class="site-header">
+<div class="site-header" #headerRef>
   <ng-container *ngIf="!isHomepage$$(); else titleWithoutLink">
     <a routerLink="/" class="header__title">
       <h1>Black Prostate Cancer Network</h1>
@@ -10,52 +10,58 @@
   </ng-template>
 
   <app-user-info></app-user-info>
+
+  
+<nav
+class="main-nav"
+[class.nav-open]="isNavOpen$$()"
+[class.nav-mobile]="isMobile$$()"
+>
+
+<button #panelTrigger aria-expanded="true" (click)="openThemePanel()" class="theme-link">
+  🎨 Theme
+</button>
+<button
+  *ngIf="isMobile$$()"
+  (click)="toggleMobileNavigation()"
+  class="menu-toggle"
+>
+  ☰ Menu
+</button>
+
+<ul *ngIf="!isMobile$$() || isNavOpen$$()" class="menu__list">
+  <!-- TODO: Replace hardcoded links with pageStore.primaryNavLinksComputed$$() when it's SSR safe -->
+  <li><a routerLink="/" (click)="closeNavOnLinkClick()">Home</a></li>
+  <li><a routerLink="/news" (click)="closeNavOnLinkClick()">News</a></li>
+  <li><a routerLink="/events" (click)="closeNavOnLinkClick()">Events</a></li>
+
+  <!--
+  <li *ngIf="'siteMap' | featureFlag">
+    <a routerLink="/site-map" (click)="closeNavOnLinkClick()">Site map</a>
+  </li>
+  -->
+</ul>
+
+<!-- TODO: Convert to SSR-friendly and restore -->
+<!--
+<button *ngIf="'search' | featureFlag" (click)="toggleOverlayPanel('search')">
+  Search
+</button>
+
+<button *ngIf="'accessibility' | featureFlag" (click)="toggleOverlayPanel('accessibility')">
+  Accessibility
+</button>
+
+<app-search
+  *ngIf="overlayService.isOverlayActive('search')"
+  (close)="overlayService.hideOverlay()"
+></app-search>
+
+<app-accessibility
+  *ngIf="overlayService.isOverlayActive('accessibility')"
+  (close)="overlayService.hideOverlay()"
+></app-accessibility>
+-->
+</nav>
 </div>
 
-<nav
-  class="main-nav"
-  [class.nav-open]="isNavOpen$$()"
-  [class.nav-mobile]="isMobile$$()"
->
-  <button
-    *ngIf="isMobile$$()"
-    (click)="toggleMobileNavigation()"
-    class="menu-toggle"
-  >
-    ☰ Menu
-  </button>
-
-  <ul *ngIf="!isMobile$$() || isNavOpen$$()" class="menu__list">
-    <!-- TODO: Replace hardcoded links with pageStore.primaryNavLinksComputed$$() when it's SSR safe -->
-    <li><a routerLink="/" (click)="closeNavOnLinkClick()">Home</a></li>
-    <li><a routerLink="/news" (click)="closeNavOnLinkClick()">News</a></li>
-    <li><a routerLink="/events" (click)="closeNavOnLinkClick()">Events</a></li>
-
-    <!--
-    <li *ngIf="'siteMap' | featureFlag">
-      <a routerLink="/site-map" (click)="closeNavOnLinkClick()">Site map</a>
-    </li>
-    -->
-  </ul>
-
-  <!-- TODO: Convert to SSR-friendly and restore -->
-  <!--
-  <button *ngIf="'search' | featureFlag" (click)="toggleOverlayPanel('search')">
-    Search
-  </button>
-
-  <button *ngIf="'accessibility' | featureFlag" (click)="toggleOverlayPanel('accessibility')">
-    Accessibility
-  </button>
-
-  <app-search
-    *ngIf="overlayService.isOverlayActive('search')"
-    (close)="overlayService.hideOverlay()"
-  ></app-search>
-
-  <app-accessibility
-    *ngIf="overlayService.isOverlayActive('accessibility')"
-    (close)="overlayService.hideOverlay()"
-  ></app-accessibility>
-  -->
-</nav>

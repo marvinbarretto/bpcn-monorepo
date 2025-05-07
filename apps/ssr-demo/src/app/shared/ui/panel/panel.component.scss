@@ -1,0 +1,25 @@
+.panel-backdrop {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999; // just below .panel-wrapper
+  pointer-events: auto;
+}
+
+
+.panel-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.panel-content {
+  background: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+}

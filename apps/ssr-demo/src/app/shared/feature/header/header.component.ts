@@ -4,9 +4,10 @@ import {
   HostBinding,
   HostListener,
   OnInit,
+  ViewChild,
   effect,
   inject,
-  signal
+  signal, AfterViewInit
 } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -20,6 +21,7 @@ import { UserInfoComponent } from '../user-info/user-info.component';
 import { SsrPlatformService } from '../../utils/ssr/ssr-platform.service';
 import { OverlayService, OverlayType } from '../../data-access/overlay.service';
 import { PageStore } from '../../../pages/data-access/page.store';
+import { PanelStore } from '../../ui/panel/panel.store';
 
 @Component({
   selector: 'app-header',
@@ -28,12 +30,13 @@ import { PageStore } from '../../../pages/data-access/page.store';
   styleUrl: './header.component.scss',
   imports: [RouterModule, CommonModule, FeatureFlagPipe, UserInfoComponent, SearchComponent, AccessibilityComponent]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
   private readonly router = inject(Router);
   private readonly ssr = inject(SsrPlatformService);
   private readonly elementRef = inject(ElementRef);
   readonly overlayService = inject(OverlayService);
   readonly pageStore = inject(PageStore);
+  readonly panelStore = inject(PanelStore);
 
   readonly DESKTOP_BREAKPOINT = 600;
 
@@ -72,6 +75,32 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.updatePanelOrigin();
+  }
+
+  @ViewChild('headerRef', { static: false }) headerRef!: ElementRef;
+
+  private updatePanelOrigin() {
+    const rect = this.headerRef?.nativeElement?.getBoundingClientRect();
+    const offsetY = rect.bottom + window.scrollY; // in case page is scrolled
+    this.panelStore.setOriginY(offsetY);
+  }
+
+
+  @ViewChild('panelTrigger', { static: false }) panelTriggerRef!: ElementRef;
+  openThemePanel() {
+    const button = this.panelTriggerRef?.nativeElement as HTMLElement;
+
+    // Get distance from top of page to bottom of button
+    const y = button?.getBoundingClientRect().bottom + window.scrollY;
+  
+    // Pass this to the panel store
+    this.panelStore.openAt('theme', y);
+  
+    // TODO: close nav if needed
+  }
+
   private setupViewportListener(): void {
     const resize$ = fromEvent(window, 'resize').pipe(
       debounceTime(200),
@@ -108,13 +137,13 @@ export class HeaderComponent implements OnInit {
     console.log(`📱 Nav toggled — isNavOpen: ${next}`);
   }
 
-  toggleOverlayPanel(overlay: OverlayType): void {
-    if (this.overlayService.isOverlayActive(overlay)) {
-      this.overlayService.hideOverlay();
-    } else {
-      this.overlayService.showOverlay(overlay);
-    }
-  }
+  // toggleOverlayPanel(overlay: OverlayType): void {
+  //   if (this.overlayService.isOverlayActive(overlay)) {
+  //     this.overlayService.hideOverlay();
+  //   } else {
+  //     this.overlayService.showOverlay(overlay);
+  //   }
+  // }
 
   closeNavOnLinkClick(): void {
     if (this.ssr.isServer || !this.isMobile$$() || !this.isNavOpen$$()) return;
