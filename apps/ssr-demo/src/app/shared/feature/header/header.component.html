@@ -17,18 +17,19 @@ class="main-nav"
 [class.nav-mobile]="isMobile$$()"
 >
 
-<button #panelTrigger aria-expanded="true" (click)="openThemePanel()" class="theme-link">
+<button #panelTrigger aria-expanded="true" (click)="openPanel('theme')" class="theme-link">
   🎨 Theme
 </button>
 
-<button
-  *ngIf="isMobile$$()"
-  (click)="openMobileNavPanel()"
-  class="menu-toggle"
-  aria-expanded="true"
->
+
+<button #panelTrigger aria-expanded="true" (click)="openPanel('search')" class="theme-link">
+  Search
+</button>
+
+<button #panelTrigger aria-expanded="true" (click)="openPanel('nav')" class="theme-link">
   ☰ Menu
 </button>
+
 
 
 

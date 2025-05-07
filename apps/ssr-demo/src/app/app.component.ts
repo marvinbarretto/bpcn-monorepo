@@ -12,6 +12,7 @@ import { PanelComponent } from './shared/ui/panel/panel.component';
 import { ThemeSelectorComponent } from "./shared/feature/theme-selector/theme-selector.component";
 import { PanelStore } from './shared/ui/panel/panel.store';
 import { NavComponent } from "./shared/feature/nav/nav.component";
+import { SearchComponent } from "./shared/feature/search/search.component";
 // @Component({
 //   selector: 'app-root',
 //   imports: [RouterModule, HeaderComponent, FooterComponent, CommonModule],
@@ -59,7 +60,7 @@ import { NavComponent } from "./shared/feature/nav/nav.component";
 
 @Component({
   standalone: true,
-  imports: [RouterModule, HeaderComponent, FooterComponent, PanelComponent, ThemeSelectorComponent, CommonModule, NavComponent],
+  imports: [RouterModule, HeaderComponent, FooterComponent, PanelComponent, ThemeSelectorComponent, CommonModule, NavComponent, SearchComponent],
   selector: 'app-root',
   templateUrl: './app.component.html'
 })

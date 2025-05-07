@@ -11,7 +11,13 @@
   [style.top.px]="panelStore.originY()"
 >
   <!-- eslint-disable-next-line -->
-  <div class="panel-content" (click)="$event.stopPropagation()" tabindex="-1">
+  <div
+    class="panel-content"
+    cdkTrapFocus
+    cdkTrapFocusAutoCapture
+    tabindex="-1"
+    (keydown.escape)="close()"
+  >
     <button class="close-button" (click)="close()" aria-label="Close panel">×</button>
     <ng-content />
   </div>

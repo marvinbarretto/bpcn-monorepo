@@ -16,7 +16,7 @@ import { FeatureFlagPipe } from '../../utils/feature-flag.pipe';
 import { UserInfoComponent } from '../user-info/user-info.component';
 import { SsrPlatformService } from '../../utils/ssr/ssr-platform.service';
 import { PageStore } from '../../../pages/data-access/page.store';
-import { PanelStore } from '../../ui/panel/panel.store';
+import { PanelStore, PanelType } from '../../ui/panel/panel.store';
 import { ViewportService } from '../../data-access/viewport.service';
 import { BREAKPOINTS } from '../../utils/constants';
 import { NavComponent } from "../nav/nav.component";
@@ -81,40 +81,23 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
 
   @ViewChild('panelTrigger', { static: false }) panelTriggerRef!: ElementRef;
-  openThemePanel() {
+
+  
+
+  openPanel(theme: PanelType) {
     const button = this.panelTriggerRef?.nativeElement as HTMLElement;
 
     // Get distance from top of page to bottom of button
     const y = button?.getBoundingClientRect().bottom + window.scrollY;
-  
-    // Pass this to the panel store
-    this.panelStore.openAt('theme', y);
-  
-    // TODO: close nav if needed
+
+    this.panelStore.openAt(theme, y)
   }
-
-  openMobileNavPanel() {
-    if (this.panelStore.activePanel() === 'nav') {
-      this.panelStore.close();
-    } else {
-      this.panelStore.open('nav');
-    }
-  
-    // Optionally: close other overlays or nav state here
-  }
-
-
-  
-  
 
   ngOnInit(): void {
     if (this.ssr.isServer) return;
 
     this.pageStore.loadPrimaryNavLinks();
   }
-
-
-
 
 
 
