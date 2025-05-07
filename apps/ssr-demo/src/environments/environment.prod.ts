@@ -7,6 +7,8 @@ export const environment = {
     homepageHero: false,
     homepageNewsWidget: false,
     homepageEventsWidget: false,
+    theme: false,
+    search: false,
     login: true,
     register: true,
     news: false,
@@ -14,6 +16,5 @@ export const environment = {
     research: false,
     siteMap: false,
     accessibility: false,
-    search: false
   }
 }

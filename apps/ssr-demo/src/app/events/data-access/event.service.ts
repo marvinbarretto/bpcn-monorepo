@@ -38,13 +38,13 @@ export class EventService extends StrapiService {
    */
   getUpcomingEvents(): Observable<IEvent[]> {
     const now = new Date().toISOString();
-    const url = `events?filters[date][$gt]=${now}&sort=date:asc`;
-    return this.get<IEventsResponse>(url)
-      .pipe(
-        map(response => response.data),
-        catchError(this.handleError)
-      );
+    const url = `events?filters[date][$gte]=${now}&sort=date:asc`;
+    return this.get<IEventsResponse>(url).pipe(
+      map(response => response.data),
+      catchError(this.handleError)
+    );
   }
+  
 
   getEvent(documentId: string): Observable<IEvent> {
     return this.get<{ data: IEvent }>(`events/${documentId}?populate=*`)

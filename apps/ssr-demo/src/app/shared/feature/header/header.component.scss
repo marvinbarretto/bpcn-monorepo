@@ -1,9 +1,6 @@
-@use "../../../../styles/index" as *;
 
+@use "./../../../../styles/abstracts/_breakpoints" as *;
 
-.site-header {
-  background-color: rgba(red, .1);
-}
 
 a, button {
   font-size: 1rem;
@@ -13,6 +10,7 @@ a, button {
 
 nav {
   display: flex;
+  background-color: rgba(blue, .1);
 }
 
 $header-bg-color: #333;
@@ -38,7 +36,7 @@ $text-color: white;
 .header__title {
   text-decoration: none;
   padding: 1rem;
-  line-height: 1.1;
+  line-height: 1.2;
   padding: 1rem 2rem;
 }
 
@@ -46,12 +44,24 @@ $text-color: white;
 
 .label {
   display: none;
-  @media (min-width: $breakpoint-TABLET) {
+  @media (min-width: $breakpoint-tablet) {
     display: block;
   }
 }
 
 
+.main-nav {
+  justify-content: space-between;
+  flex-direction: row-reverse;
+
+  @media (min-width: $nav-breakpoint) {
+    flex-direction: row;
+  }
+}
+
+.main-nav__actions {
+  display: flex;
+}
 
 .menu {
   background-color: $menu-bg-color;
@@ -63,7 +73,7 @@ $text-color: white;
 }
 
 .menu__list {
-  @media (min-width: $breakpoint-TABLET) {
+  @media (min-width: $breakpoint-tablet) {
     display: flex;
   }
 }
@@ -119,7 +129,7 @@ nav ul {
   gap: .25rem;
   align-items: center;
   justify-content: flex-start;
-  @media (min-width: $breakpoint-TABLET) {
+  @media (min-width: $breakpoint-tablet) {
     display: none;
   }
   &:hover {

@@ -24,7 +24,7 @@
         ],
         "styles": ["apps/ssr-demo/src/styles.scss"],
         "stylePreprocessorOptions": {
-          "includePaths": ["apps/ssr-demo/src/styles"]
+          "includePaths": ["apps/ssr-demo/src"]
         },
         "scripts": []
       },

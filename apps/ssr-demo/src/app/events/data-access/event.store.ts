@@ -56,9 +56,6 @@ export class EventStore {
     ).subscribe();
   }
 
-  loadAllEvents() {
-  }
-
   createEvent(newEvent: IEvent) {
     console.log('Creating a new event...');
     this.loading$$.set(true);

@@ -7,12 +7,14 @@ export const environment = {
     homepageHero: false,
     homepageNewsWidget: false,
     homepageEventsWidget: false,
+    theme: false,
+    search: false,
     login: true,
     register: true,
     news: false,
     events: true,
     research: false,
     siteMap: false,
-    accessibility: false
+    accessibility: false,
   }
 }

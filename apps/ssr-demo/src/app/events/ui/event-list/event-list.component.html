@@ -3,6 +3,10 @@
 </div>
 
 <ng-template #eventList>
+
+  <p>Loaded {{ events.length }} events:</p>
+  <pre>{{ events | json }}</pre>
+
   <ul class="event-list" *ngIf="events.length; else noEvents">
     <li *ngFor="let event of events">
       <a class="event-list__item" routerLink="/events/{{ event.slug }}">

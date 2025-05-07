@@ -1,4 +1,4 @@
-@use "../../../../styles/index" as *;
+@use "styles/abstracts/breakpoints" as *;
 
 :host {
   display: block;
@@ -18,7 +18,7 @@
   padding: 0.5rem;
 }
 
-@media (min-width: $breakpoint-TABLET) {
+@media (min-width: $breakpoint-tablet) {
   .authenticate {
     justify-content: flex-end;
 
@@ -31,8 +31,6 @@
     }
   }
 }
-
-
 
 
 .user-info {
