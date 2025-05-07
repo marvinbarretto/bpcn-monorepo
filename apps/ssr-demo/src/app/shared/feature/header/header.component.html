@@ -14,33 +14,26 @@
   
 <nav
 class="main-nav"
-[class.nav-open]="isNavOpen$$()"
 [class.nav-mobile]="isMobile$$()"
 >
 
 <button #panelTrigger aria-expanded="true" (click)="openThemePanel()" class="theme-link">
   🎨 Theme
 </button>
+
 <button
   *ngIf="isMobile$$()"
-  (click)="toggleMobileNavigation()"
+  (click)="openMobileNavPanel()"
   class="menu-toggle"
+  aria-expanded="true"
 >
   ☰ Menu
 </button>
 
-<ul *ngIf="!isMobile$$() || isNavOpen$$()" class="menu__list">
-  <!-- TODO: Replace hardcoded links with pageStore.primaryNavLinksComputed$$() when it's SSR safe -->
-  <li><a routerLink="/" (click)="closeNavOnLinkClick()">Home</a></li>
-  <li><a routerLink="/news" (click)="closeNavOnLinkClick()">News</a></li>
-  <li><a routerLink="/events" (click)="closeNavOnLinkClick()">Events</a></li>
 
-  <!--
-  <li *ngIf="'siteMap' | featureFlag">
-    <a routerLink="/site-map" (click)="closeNavOnLinkClick()">Site map</a>
-  </li>
-  -->
-</ul>
+
+<app-nav *ngIf="!isMobile$$()" />
+
 
 <!-- TODO: Convert to SSR-friendly and restore -->
 <!--

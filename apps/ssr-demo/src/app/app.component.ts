@@ -8,10 +8,10 @@ import { PageTitleService } from './shared/data-access/page-title.service';
 import { BackendHealthService } from './shared/data-access/backend-health.service';
 import { CommonModule, isPlatformServer } from '@angular/common';
 import { UserPreferencesStore } from './shared/data-access/user-preferences.store';
-import { OverlayService } from './shared/data-access/overlay.service';
 import { PanelComponent } from './shared/ui/panel/panel.component';
 import { ThemeSelectorComponent } from "./shared/feature/theme-selector/theme-selector.component";
 import { PanelStore } from './shared/ui/panel/panel.store';
+import { NavComponent } from "./shared/feature/nav/nav.component";
 // @Component({
 //   selector: 'app-root',
 //   imports: [RouterModule, HeaderComponent, FooterComponent, CommonModule],
@@ -59,7 +59,7 @@ import { PanelStore } from './shared/ui/panel/panel.store';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, HeaderComponent, FooterComponent, PanelComponent, ThemeSelectorComponent, CommonModule],
+  imports: [RouterModule, HeaderComponent, FooterComponent, PanelComponent, ThemeSelectorComponent, CommonModule, NavComponent],
   selector: 'app-root',
   templateUrl: './app.component.html'
 })

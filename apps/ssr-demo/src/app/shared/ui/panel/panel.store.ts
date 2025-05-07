@@ -1,7 +1,7 @@
 import { signal, computed } from '@angular/core';
 import { Injectable } from '@angular/core';
 
-export type PanelType = 'theme' | 'search' | null;
+export type PanelType = 'theme' | 'search' | 'nav' | null;
 
 @Injectable({
   providedIn: 'root',

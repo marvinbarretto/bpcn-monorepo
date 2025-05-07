@@ -2,10 +2,8 @@ import {
   Component,
   ElementRef,
   HostBinding,
-  HostListener,
   OnInit,
   ViewChild,
-  effect,
   inject,
   signal, AfterViewInit
 } from '@angular/core';
@@ -15,37 +13,32 @@ import { debounceTime, distinctUntilChanged, filter, fromEvent, map, startWith }
 
 import { CommonModule } from '@angular/common';
 import { FeatureFlagPipe } from '../../utils/feature-flag.pipe';
-import { AccessibilityComponent } from '../accessibility/accessibility.component';
-import { SearchComponent } from '../search/search.component';
 import { UserInfoComponent } from '../user-info/user-info.component';
 import { SsrPlatformService } from '../../utils/ssr/ssr-platform.service';
-import { OverlayService, OverlayType } from '../../data-access/overlay.service';
 import { PageStore } from '../../../pages/data-access/page.store';
 import { PanelStore } from '../../ui/panel/panel.store';
+import { ViewportService } from '../../data-access/viewport.service';
+import { BREAKPOINTS } from '../../utils/constants';
+import { NavComponent } from "../nav/nav.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  imports: [RouterModule, CommonModule, FeatureFlagPipe, UserInfoComponent, SearchComponent, AccessibilityComponent]
+  imports: [RouterModule, CommonModule, FeatureFlagPipe, UserInfoComponent, NavComponent]
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
   private readonly router = inject(Router);
   private readonly ssr = inject(SsrPlatformService);
   private readonly elementRef = inject(ElementRef);
-  readonly overlayService = inject(OverlayService);
   readonly pageStore = inject(PageStore);
   readonly panelStore = inject(PanelStore);
 
-  readonly DESKTOP_BREAKPOINT = 600;
-
   // Signals
-  readonly isNavOpen$$ = signal(false);
-  readonly isMobile$$ = signal(false);
+  // readonly isNavOpen$$ = signal(false);
+  readonly isMobile$$ = inject(ViewportService).isMobile$$;
   readonly isHomepage$$ = signal(false);
-  readonly isSearchOpen$$ = signal(false);
-  readonly isAccessibilityOpen$$ = signal(false);
 
   constructor() {
     this.ssr.logContext('HeaderComponent');
@@ -68,10 +61,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
           takeUntilDestroyed()
         )
         .subscribe(() => {
-          this.overlayService.hideOverlay();
+          // this.overlayService.hideOverlay();
         });
   
-      this.setupViewportListener();
     }
   }
 
@@ -101,24 +93,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     // TODO: close nav if needed
   }
 
-  private setupViewportListener(): void {
-    const resize$ = fromEvent(window, 'resize').pipe(
-      debounceTime(200),
-      map(() => window.innerWidth),
-      startWith(window.innerWidth), // Ensure initial value is set
-      distinctUntilChanged(),
-      map((width) => ({
-        width,
-        isMobile: width <= this.DESKTOP_BREAKPOINT
-      }))
-    );
+  openMobileNavPanel() {
+    if (this.panelStore.activePanel() === 'nav') {
+      this.panelStore.close();
+    } else {
+      this.panelStore.open('nav');
+    }
   
-    resize$.pipe(takeUntilDestroyed()).subscribe(({ width, isMobile }) => {
-      this.isMobile$$.set(isMobile);
-      this.isNavOpen$$.set(!isMobile);
-      console.log(`📐 Viewport width: ${width}px — isMobile: ${isMobile}`);
-    });
+    // Optionally: close other overlays or nav state here
   }
+
+
   
   
 
@@ -128,51 +113,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.pageStore.loadPrimaryNavLinks();
   }
 
-  toggleMobileNavigation(): void {
-    if (this.ssr.isServer) return;
 
-    const next = !this.isNavOpen$$();
-    this.isNavOpen$$.set(next);
-    this.ssr.getDocument()?.documentElement.classList.toggle('nav-open', next);
-    console.log(`📱 Nav toggled — isNavOpen: ${next}`);
-  }
 
-  // toggleOverlayPanel(overlay: OverlayType): void {
-  //   if (this.overlayService.isOverlayActive(overlay)) {
-  //     this.overlayService.hideOverlay();
-  //   } else {
-  //     this.overlayService.showOverlay(overlay);
-  //   }
-  // }
 
-  closeNavOnLinkClick(): void {
-    if (this.ssr.isServer || !this.isMobile$$() || !this.isNavOpen$$()) return;
 
-    this.isNavOpen$$.set(false);
-    this.ssr.getDocument()?.body.classList.remove('no-scroll');
-    console.log('🔗 Link clicked — nav closed');
-  }
-
-  @HostListener('window:resize')
-  onResize(): void {
-    // Handled by signal/effect already, just clean up body class
-    if (!this.isMobile$$()) {
-      this.ssr.getDocument()?.body.classList.remove('no-scroll');
-      console.log('🖥️ Resized to desktop — scrolling re-enabled');
-    }
-  }
-
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: Event): void {
-    if (this.ssr.isServer) return;
-
-    const clickedOutside = !this.elementRef.nativeElement.contains(event.target);
-    if (this.isMobile$$() && this.isNavOpen$$() && clickedOutside) {
-      this.isNavOpen$$.set(false);
-      this.ssr.getDocument()?.body.classList.remove('no-scroll');
-      console.log('🖱️ Clicked outside — nav closed');
-    }
-  }
 
   @HostBinding('class.is-mobile') get isMobileClass() {
     return this.isMobile$$();
