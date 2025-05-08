@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, OnInit, signal } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthStore } from '../../../auth/data-access/auth.store';
@@ -89,6 +89,14 @@ export class EventListContainerComponent implements OnInit {
   readonly nextEvent = computed(() =>
     this.filteredEvents().find(e => new Date(e.date) > new Date()) ?? null
   );
+
+  constructor() {
+    effect(() => {
+      this.filterStatus$$(); 
+      this.currentPage$$.set(1); 
+      console.log('[Pagination] Reset due to route change');
+    })
+  }
 
   ngOnInit(): void {
     this.eventService.getEvents().subscribe({
