@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, OnInit, signal } from '@angular/core';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthStore } from '../../../auth/data-access/auth.store';
 import { EventModel, EventStatus } from '../../utils/event.model';
@@ -11,6 +11,7 @@ import { PaginationComponent } from "../../../shared/ui/pagination/pagination.co
 import { EventsNavComponent } from "../../ui/events-nav/events-nav.component";
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { NotificationService } from '../../../shared/data-access/notification.service';
 
 @Component({
     selector: 'app-event-list-container',
@@ -23,6 +24,8 @@ export class EventListContainerComponent implements OnInit {
   private readonly eventService = inject(EventService);
   private readonly paginationService = inject(PaginationService);
   private readonly route = inject(ActivatedRoute);
+  private readonly notificationService = inject(NotificationService);
+  private readonly router = inject(Router);
 
   readonly filterStatus$$ = toSignal(
     this.route.data.pipe(map(data => data['filterStatus'] as EventStatus))
@@ -38,13 +41,16 @@ export class EventListContainerComponent implements OnInit {
   readonly canCreateEvent = this.authStore.canCreateEvent$$;
   readonly canReviewEvents = this.authStore.canReviewEvents$$;
 
-  // Filtered events
   readonly filteredEvents = computed(() => {
     const status = this.filterStatus$$();
-    if (!status) {
-      console.warn('[EventList] No valid filter status — returning empty list');
-      return [];
+    if (!status) return [];
+    
+    const validStatuses = Object.values(EventStatus);
+    if (!validStatuses.includes(status)) {
+      this.notificationService.error('Invalid filter status');
+      this.router.navigate(['/events/upcoming']);
     };
+
     const now = new Date();
     const events = this.canReviewEvents()
       ? this.allEvents$$()
