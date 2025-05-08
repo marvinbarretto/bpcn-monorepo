@@ -4,25 +4,33 @@ import { Observable, map, catchError, of } from 'rxjs';
 import { EventModel, StrapiEvent, StrapiEventsResponse } from '../utils/event.model';
 import { HttpParams } from '@angular/common/http';
 import { normaliseEvent } from '../utils/event.normaliser';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService extends StrapiService {
-  getEventBySlug(slug: string): Observable<EventModel | null> {
+
+  async getEventBySlug(slug: string): Promise<EventModel | null> {
+    console.log('[EventService] Fetching event for slug:', slug);
+
     const params = new HttpParams()
       .set('filters[slug][$eq]', slug)
       .set('populate', '*');
 
-    return this.get<StrapiEventsResponse>('events', { params }).pipe(
-      map(res => res.data[0] ?? null),
-      map(raw => raw ? normaliseEvent(raw) : null),
-      catchError(error => {
-        console.error('Error fetching event:', error);
-        return of(null);
-      })
-    );
+    try {
+      // Uses firstValueFrom() to unwrap the observable as a Promise
+      const res = await firstValueFrom(
+        this.get<StrapiEventsResponse>('events', { params })
+      );
+      const raw = res.data[0] ?? null;
+      return raw ? normaliseEvent(raw) : null;
+    } catch (error) {
+      console.error('[EventService] Failed to fetch event:', error);
+      return null;
+    }
   }
+
 
   getEvents(): Observable<EventModel[]> {
     return this.get<StrapiEventsResponse>('events?populate=*').pipe(

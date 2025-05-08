@@ -14,8 +14,6 @@ import { RouterModule } from '@angular/router';
         <small>{{ event.date | date:'longDate' }} ({{ event.date }})</small>
       </a>
     </li>
-
-    {{ event | json }}
   `
 })
 export class EventListItemComponent {

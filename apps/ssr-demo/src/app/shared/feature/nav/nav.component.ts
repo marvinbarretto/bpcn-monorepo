@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SsrPlatformService } from '../../utils/ssr/ssr-platform.service';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 })
 export class NavComponent {
   private readonly ssr = inject(SsrPlatformService);
+  private readonly router = inject(Router);
   readonly isMobile$$ = signal(false);
 
   constructor() {
@@ -20,4 +21,5 @@ export class NavComponent {
       check(); // initial
     }
   }
+
 }

@@ -8,11 +8,9 @@
     @if (paginatedEvents.length > 0) {
       <ol class="approved-events">
         @for (event of paginatedEvents; track event.id) {
-          <li>
-            <app-event-list-item
-              [event]="event"
-              (clicked)="onItemClicked(event)" />
-          </li>
+          <app-event-list-item
+            [event]="event"
+            (clicked)="onItemClicked(event)" />
         }
       </ol>
 

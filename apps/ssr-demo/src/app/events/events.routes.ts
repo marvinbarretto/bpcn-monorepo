@@ -13,7 +13,7 @@ export const EVENTS_ROUTES: Routes = [
   },
   {
     path: ':slug',
-    loadComponent: () => import('./ui/event-detail/event-detail.component').then(m => m.EventDetailComponent)
+    loadComponent: () => import('./feature/event-detail-container/event-detail-container.component').then(m => m.EventDetailContainerComponent)
   },
   {
     path: '',

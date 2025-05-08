@@ -2,6 +2,13 @@
  * EventListContainer
  * 
  * Responsibilities:
+ * 
+ * 
+ *  - TODO: double check the initial json is streamlined  
+ *  - 
+ * 
+ * 
+ * 
     Fetch all events via EventService
 
     Filter events by role:
@@ -64,7 +71,7 @@ export class EventListContainerComponent implements OnInit {
   allEvents: EventModel[] = [];
   paginatedEvents: EventModel[] = [];
 
-  pageSize = 1;
+  pageSize = 10;
   currentPage = signal(1);
   totalPages = signal(1);
   nextEvent: EventModel | null = null;
