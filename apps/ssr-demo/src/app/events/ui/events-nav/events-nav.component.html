@@ -1,0 +1,16 @@
+<nav class="events-nav">
+  <ul>
+    <li>
+      <a routerLink="/events/upcoming" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Upcoming
+      </a>
+    </li>
+    <li *ngFor="let link of links()">
+      <a
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: false }" [routerLink]="link.url">
+        {{ link.label }}
+      </a>
+    </li>
+  </ul>
+</nav>

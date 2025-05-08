@@ -7,7 +7,7 @@ import { AuthService } from "./auth.service";
 import { UserService } from "../../users/data-access/user.service";
 import { CookieService } from "../../shared/data-access/cookie.service";
 import { SsrPlatformService } from "../../shared/utils/ssr/ssr-platform.service";
-import { Injectable, inject, signal } from "@angular/core";
+import { Injectable, computed, inject, signal } from "@angular/core";
 import { Router } from "@angular/router";
 import { tap, take, catchError } from "rxjs/operators";
 import { User } from "../../users/utils/user.model";
@@ -18,29 +18,99 @@ export class AuthStore {
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly cookieService = inject(CookieService);
-  private readonly ssr = inject(SsrPlatformService);
+  private readonly platform = inject(SsrPlatformService);
   private readonly router = inject(Router);
 
-  user$$ = signal<User | null>(null);
-  token$$ = signal<string | null>(null);
-  loading$$ = signal<boolean>(false);
-  error$$ = signal<string | null>(null);
-  ready$$ = signal<boolean>(false);
+  readonly user$$ = signal<User | null>(null);
+  readonly token$$ = signal<string | null>(null);
+  readonly loading$$ = signal<boolean>(false);
+  readonly error$$ = signal<string | null>(null);
+  readonly ready$$ = signal<boolean>(false);
 
   constructor() {
-    this.ssr.onlyOnBrowser(() => {
+    this.platform.onlyOnBrowser(() => {
       const token = this.cookieService.getCookie('authToken');
-      console.log('[AuthStore] Bootstrapping from cookie — token:', token);
-  
       const user = localStorage.getItem('user');
+      console.log('[AuthStore] Bootstrapping from cookie — token:', token);
       console.log('[AuthStore] Bootstrapping from localStorage — user:', user);
   
       this.loadUserFromStorage();
     });
   }
 
+  // Reactive role checks
+  readonly isAuthenticated$$ = computed(() => !!this.token$$());
+  readonly role$$ = computed(() => this.user$$()?.role.name ?? Roles.Public);
+  readonly isAdmin$$ = computed(() => this.role$$() === Roles.Admin);
+  readonly isAuthor$$ = computed(() => this.role$$() === Roles.Author);
+
+  readonly canCreateEvent$$ = computed(() => this.isAdmin$$() || this.isAuthor$$());
+  readonly canCreateArticle$$ = computed(() => this.isAdmin$$() || this.isAuthor$$());
+  readonly canCreateUser$$ = computed(() => this.isAdmin$$());
+  readonly canReviewEvents$$ = computed(() => this.isAdmin$$());
+  readonly canReviewArticles$$ = computed(() => this.isAdmin$$());
+
+  // Non-reactive
+
+  /**
+   * @deprecated Use isAuthenticated$$ instead
+   */
+  isAuthenticated(): boolean {
+    return !!this.token$$();
+  }
+
+  /**
+   * @deprecated Use isAdmin$$ instead
+   */
+  isAdmin(): boolean {
+    return this.hasRole(Roles.Admin);
+  }
+
+  /**
+   * @deprecated Use role$$ instead
+   */
+  hasRole(role: Roles): boolean {
+    return this.user$$()?.role.name === role;
+  }
+
+  /**
+   * @deprecated Use canCreateEvent$$ instead
+   */
+  canCreateEvent(): boolean {
+    return this.hasRole(Roles.Author) || this.hasRole(Roles.Admin);
+  }
+
+  /**
+   * @deprecated Use canCreateArticle$$ instead
+   */
+  canCreateArticle(): boolean {
+    return this.hasRole(Roles.Author) || this.hasRole(Roles.Admin);
+  }
+
+  /**
+   * @deprecated Use canCreateUser$$ instead
+   */
+  canCreateUser(): boolean {
+    return this.hasRole(Roles.Admin);
+  }
+
+  /**
+   * @deprecated Use canReviewEvents$$ instead
+   */
+  canReviewEvents(): boolean {
+    return this.hasRole(Roles.Admin);
+  }
+
+  
+  /**
+   * @deprecated Use canReviewArticles$$ instead
+   */
+  canReviewArticles(): boolean {
+    return this.hasRole(Roles.Admin);
+  }
+
   bootstrapFromCookie(): void {
-    if (!this.ssr.isBrowser) return;
+    if (!this.platform.isBrowser) return;
   
     const token = this.cookieService.getCookie('authToken');
     if (!token) {
@@ -65,10 +135,8 @@ export class AuthStore {
       }
     });
   }
-  
-
   private loadUserFromStorage() {
-    if (!this.ssr.isBrowser) return;
+    if (!this.platform.isBrowser) return;
     
     const token = this.cookieService.getCookie('authToken');
     const user = localStorage.getItem('user');
@@ -105,7 +173,7 @@ export class AuthStore {
   logout() {
     this.cookieService.deleteCookie('authToken');
 
-    this.ssr.onlyOnBrowser(() => {
+    this.platform.onlyOnBrowser(() => {
       localStorage.removeItem('user');
     });
 
@@ -137,7 +205,7 @@ export class AuthStore {
     this.userService.getUserDetails().subscribe({
       next: (user) => {
         this.user$$.set(user);
-        this.ssr.onlyOnBrowser(() => {
+        this.platform.onlyOnBrowser(() => {
           localStorage.setItem('user', JSON.stringify(user));
         });
         this.loading$$.set(false);
@@ -152,35 +220,4 @@ export class AuthStore {
   }
   
 
-  isAuthenticated(): boolean {
-    return !!this.token$$();
-  }
-
-  isAdmin(): boolean {
-    return this.hasRole(Roles.Admin);
-  }
-
-  hasRole(role: Roles): boolean {
-    return this.user$$()?.role.name === role;
-  }
-
-  canCreateEvent(): boolean {
-    return this.hasRole(Roles.Author) || this.hasRole(Roles.Admin);
-  }
-
-  canCreateArticle(): boolean {
-    return this.hasRole(Roles.Author) || this.hasRole(Roles.Admin);
-  }
-
-  canCreateUser(): boolean {
-    return this.hasRole(Roles.Admin);
-  }
-
-  canReviewEvents(): boolean {
-    return this.hasRole(Roles.Admin);
-  }
-
-  canReviewArticles(): boolean {
-    return this.hasRole(Roles.Admin);
-  }
 }

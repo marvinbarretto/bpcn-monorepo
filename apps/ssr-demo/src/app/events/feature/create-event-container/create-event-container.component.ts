@@ -5,14 +5,15 @@ import { CommonModule } from '@angular/common';
 import { EventService } from '../../data-access/event.service';
 import { EventStore } from '../../data-access/event.store';
 import { Router } from '@angular/router';
+import { EventsNavComponent } from "../../ui/events-nav/events-nav.component";
 
 @Component({
     selector: 'app-create-event',
-    imports: [ReactiveFormsModule, FormsModule, CommonModule],
-    templateUrl: './create-event.component.html',
-    styleUrl: './create-event.component.scss'
+    imports: [ReactiveFormsModule, FormsModule, CommonModule, EventsNavComponent],
+    templateUrl: './create-event-container.component.html',
+    styleUrl: './create-event-container.component.scss'
 })
-export class CreateEventComponent {
+export class CreateEventContainerComponent {
 
   // eventForm: FormGroup = new FormGroup({});
 

@@ -72,5 +72,7 @@ export enum EventStatus {
   PENDING = 'Pending',
   APPROVED = 'Approved',
   REJECTED = 'Rejected',
-  ARCHIVED = 'Archived'
+  ARCHIVED = 'Archived',
+  UPCOMING = 'Upcoming',
+  PAST = 'Past',
 }
