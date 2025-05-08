@@ -1,47 +1,3 @@
-/**
- * EventListContainer
- * 
- * Responsibilities:
- * 
- * 
- *  - TODO: double check the initial json is streamlined  
- *  - 
- * 
- * 
- * 
-    Fetch all events via EventService
-
-    Filter events by role:
-
-    Normal users see only APPROVED events
-
-    Admins see all events and are prompted if any are PENDING
-
-    Highlight the next upcoming event
-
-    Display all events via <event-list [events]>
-
-    Each item rendered with <event-card [event]>
-
-    Provide links to:
-
-    Create a new event (if allowed)
-
-    Review pending events (if allowed and any pending exist)
-
-    Add utilities:
-
-
-    isUpcoming pipe
-
-    TODOs:
-
-    Implement pagination and event caching
-
-    Add sorting helpers if needed
-
- */
-
 import { CommonModule } from '@angular/common';
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
@@ -85,7 +41,10 @@ export class EventListContainerComponent implements OnInit {
   // Filtered events
   readonly filteredEvents = computed(() => {
     const status = this.filterStatus$$();
-    if (!status) return [];
+    if (!status) {
+      console.warn('[EventList] No valid filter status — returning empty list');
+      return [];
+    };
     const now = new Date();
     const events = this.canReviewEvents()
       ? this.allEvents$$()

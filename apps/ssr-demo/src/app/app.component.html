@@ -5,6 +5,7 @@
 </ng-container> -->
 <div class="site-container">
   <app-header />
+  <app-notifications />
   <router-outlet></router-outlet>
   <app-panel>
     <app-theme-selector *ngIf="panelStore.activePanel() === 'theme'">></app-theme-selector>

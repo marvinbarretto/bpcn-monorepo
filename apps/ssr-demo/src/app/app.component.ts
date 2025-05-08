@@ -14,6 +14,7 @@ import { PanelStore } from './shared/ui/panel/panel.store';
 import { NavComponent } from "./shared/feature/nav/nav.component";
 import { SearchComponent } from "./shared/feature/search/search.component";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NotificationsComponent } from "./shared/ui/notifications/notifications.component";
 // @Component({
 //   selector: 'app-root',
 //   imports: [RouterModule, HeaderComponent, FooterComponent, CommonModule],
@@ -61,7 +62,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, HeaderComponent, FooterComponent, PanelComponent, ThemeSelectorComponent, CommonModule, NavComponent, SearchComponent],
+  imports: [RouterModule, HeaderComponent, FooterComponent, PanelComponent, ThemeSelectorComponent, CommonModule, NavComponent, SearchComponent, NotificationsComponent],
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
@@ -70,8 +71,6 @@ export class AppComponent {
   readonly panelStore = inject(PanelStore);
   
   constructor() {
-    console.log('✅ AppComponent constructor running');
-
     this.router.events
       .pipe(
         filter((event): event is NavigationStart => event instanceof NavigationStart),
