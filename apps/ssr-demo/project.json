@@ -19,7 +19,13 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/ssr-demo/public"
+            "input": "apps/ssr-demo/public",
+            "output": "."
+          },
+          {
+            "glob": "**/*",
+            "input": "apps/ssr-demo/src/assets",
+            "output": "assets"
           }
         ],
         "styles": ["apps/ssr-demo/src/styles.scss"],

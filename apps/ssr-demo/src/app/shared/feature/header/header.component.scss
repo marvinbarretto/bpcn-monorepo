@@ -1,6 +1,8 @@
 
-@use "./../../../../styles/abstracts/_breakpoints" as *;
+@use "styles/abstracts/_breakpoints" as *;
 
+
+// TODO: Clean this up proper
 
 a, button {
   font-size: 1rem;
@@ -22,8 +24,6 @@ $text-color: white;
 }
 
 .header {
-  // background-color: $header-bg-color;
-  background-color: rgba(red, .1);
   color: $text-color;
   text-align: center;
   display: flex;
@@ -34,13 +34,19 @@ $text-color: white;
 }
 
 .header__title {
+  background-color: #1a2e3d; // #333;
+  color: #cc945f; // white;
+
   text-decoration: none;
   padding: 1rem;
   line-height: 1.2;
   padding: 1rem 2rem;
+  text-align: center;
 }
 
-
+.header__title h1 {
+  font-size: 3rem;
+}
 
 .label {
   display: none;
@@ -87,8 +93,8 @@ a, button {
 }
 
 a:hover, button:hover {
-  background-color: white;
-  color: #333;
+  background-color: black;
+  color: white;
 }
 
 

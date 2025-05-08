@@ -1,0 +1,26 @@
+<section class="next-event-widget fade-in" *ngIf="loaded$$(); else loading">
+    <ng-container *ngIf="nextEvent(); else noEvent">
+        <header>
+        <h3 class="eyebrow">Next Event</h3>
+        <h2>{{ nextEvent().title }}</h2>
+        <p class="date">{{ nextEvent().date | relativeDate }}</p>
+        </header>
+        <footer>
+        <a [routerLink]="['/events', nextEvent().slug]" class="btn">View event</a>
+        </footer>
+    </ng-container>
+</section>
+
+<ng-template #noEvent>
+    <section class="next-event-widget empty fade-in">
+        <h3 class="eyebrow">Next Event</h3>
+        <p>No upcoming events at the moment.</p>
+    </section>
+</ng-template>
+
+<ng-template #loading>
+    <section class="next-event-widget skeleton">
+        <p>Loading next event...</p>
+    </section>
+</ng-template>
+  

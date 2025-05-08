@@ -20,3 +20,24 @@ line-height: 1.2;
 h1 { font-size: 2rem; }
 h2 { font-size: 1.5rem; }
 h3 { font-size: 1.25rem; }
+
+@mixin barlow-condensed {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+@mixin site-heading {
+  font-size: 3rem;
+  @include barlow-condensed;
+}
+
+@mixin page-heading {
+  font-size: 2rem;
+  @include barlow-condensed;
+}
+
+@mixin section-heading {
+  font-size: 1.5rem;
+  @include barlow-condensed;
+}

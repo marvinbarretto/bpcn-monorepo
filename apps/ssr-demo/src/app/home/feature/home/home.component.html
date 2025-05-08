@@ -4,16 +4,10 @@
 
 <div class="sections">
 
-  <section class="news-widget" *ngIf="'homepageNewsWidget' | featureFlag">
-    <h2>News</h2>
-    <p>...</p>
-  </section>
 
+  <app-next-event-widget></app-next-event-widget>
 
-  <section class="events-widget">
-  <h2>Events</h2>
-  <p>...</p>
-  </section>
+  <app-recent-news-widget></app-recent-news-widget>
 
 
   <!-- TODO: !authStore.isAuthenticated() not working -->

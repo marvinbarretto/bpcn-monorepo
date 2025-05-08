@@ -1,0 +1,23 @@
+<section class="recent-news-widget fade-in" *ngIf="loaded$$(); else loading">
+    <h3 class="eyebrow">Recent News</h3>
+  
+    <ul>
+      <li *ngFor="let item of recentNews()">
+        <a target="_blank" href="{{ item.link }}">
+          {{ item.title }}
+          <span class="date">{{ item.pubDate }}</span>
+        </a>
+      </li>
+    </ul>
+  
+    <footer>
+      <a routerLink="/news" class="btn">View all news</a>
+    </footer>
+  </section>
+  
+  <ng-template #loading>
+    <section class="recent-news-widget skeleton">
+      <p>Loading recent news...</p>
+    </section>
+  </ng-template>
+  

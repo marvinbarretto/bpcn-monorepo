@@ -1,0 +1,73 @@
+@use 'styles/base/typography' as *;
+// TODO: Should i be getting directly from here, or should i be getting from the index?
+
+:host {
+  container-type: inline-size;
+  display: flex;
+}
+
+.next-event-widget {
+  padding: 1rem;
+  width: 100%;
+  background: #f4f4f4;
+  transition: background-color 0.3s ease;
+
+  h2 {
+    @include section-heading;
+  }
+
+  @container (min-width: 300px) {
+    background: #e0f7fa; // light cyan
+  }
+
+  @container (min-width: 500px) {
+    background: #c5e1a5; // light green
+  }
+
+  @container (min-width: 700px) {
+    background: #d1c4e9; // lavender
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #666;
+  }
+
+  .date {
+    font-size: 0.875rem;
+    color: #444;
+  }
+
+  .btn {
+    margin-top: 0.5rem;
+  }
+}
+
+
+// TODO: Move these out
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.skeleton {
+  background: repeating-linear-gradient(90deg, #eee, #f5f5f5 10px, #eee 20px);
+  min-height: 100px;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
