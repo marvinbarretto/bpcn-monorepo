@@ -1,54 +1,71 @@
 import { Hero } from "../../shared/utils/image.model"
 import { Seo } from "../../shared/utils/seo.model"
 
-export interface IEventsRequest {
-  data: IEvent
+export type StrapiEventsRequest = {
+  data: StrapiEvent
 }
 
-export interface IEventsResponse {
-  data: IEvent[]
+export type StrapiEventsResponse = {
+  data: StrapiEvent[]
   meta: Meta
 }
 
-export interface IEventContentBlock {
+export type StrapiEventContentBlock = {
   type: string
   level: number
-  children: IEventContentBlockChild[]
+  children: StrapiEventContentBlockChild[]
 }
 
-export interface IEventContentBlockChild {
+export type StrapiEventContentBlockChild = {
   text: string
   type: string
   bold?: boolean
   italic?: boolean
 }
 
-export interface IEvent {
+export type StrapiEvent = {
+  id: number
   title: string
   slug: string
-  content: IEventContentBlock[]
+  content: StrapiEventContentBlock[]
   date: string
   eventStatus: EventStatus
   hero?: Hero
   seo?: Seo
   location?: string
-  id?: number
   documentId?: string
   createdAt?: string
   updatedAt?: string
   publishedAt?: string
   locale?: any
+  featured?: boolean
 }
 
-export interface Meta {
+export type Meta = {
   pagination: Pagination
 }
 
-export interface Pagination {
+export type Pagination = {
   page: number
   pageSize: number
   pageCount: number
   total: number
+}
+
+export type EventModel = {
+  id: number
+  title: string
+  slug: string
+  content: StrapiEventContentBlock[]
+  date: string
+  eventStatus: EventStatus
+  hero?: Hero
+  seo?: Seo
+  location: string
+  createdAt?: string
+  updatedAt?: string
+  publishedAt?: string
+  featured?: boolean
 }
 
 export enum EventStatus {

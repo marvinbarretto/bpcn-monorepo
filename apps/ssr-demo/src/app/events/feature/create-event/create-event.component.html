@@ -1,8 +1,5 @@
-<form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+<!-- <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
 
-
-  <!-- TODO: Add a rich text editor here -->
-  <!-- TODO: Need to add a time picker here too or allow for all day -->
 
   <div>
     <label for="title">Title:</label>
@@ -22,8 +19,6 @@
     <div *ngIf="date!.invalid && date!.touched">Date is required</div>
   </div>
 
-  <!-- TODO: Check if have authroity, if so then allow user to bypass pending -->
-
   <div>
     <label for="location">Location:</label>
     <input id="location" formControlName="location" />
@@ -36,4 +31,4 @@
 
   <div *ngIf="eventStore.loading$$()">Creating event, please wait...</div>
   <div *ngIf="eventStore.error$$()">{{ eventStore.error$$() }}</div>
-</form>
+</form> -->

@@ -1,4 +1,4 @@
-<nav class="pagination">
+<nav class="pagination" *ngIf="totalPages > 1">
   <p>Page <b>{{ currentPage }}</b> of <b>{{ totalPages }}</b></p>
 
   <div class="buttons">
@@ -7,14 +7,13 @@
       <span>Previous</span>
     </button>
 
-    <!-- Loop through all page numbers and render buttons for each -->
-    <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+    <ng-container *ngFor="let page of pageNumbers">
       <button
-        [class.active]="i + 1 === currentPage"
-        (click)="goToPage(i + 1)"
-        [attr.aria-label]="'Go to page ' + (i + 1)"
-        [attr.aria-current]="i + 1 === currentPage ? 'page' : null">
-        {{ i + 1 }}
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+        [attr.aria-label]="'Go to page ' + page"
+        [attr.aria-current]="page === currentPage ? 'page' : null">
+        {{ page }}
       </button>
     </ng-container>
 

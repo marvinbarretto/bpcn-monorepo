@@ -156,6 +156,10 @@ export class AuthStore {
     return !!this.token$$();
   }
 
+  isAdmin(): boolean {
+    return this.hasRole(Roles.Admin);
+  }
+
   hasRole(role: Roles): boolean {
     return this.user$$()?.role.name === role;
   }

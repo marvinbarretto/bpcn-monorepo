@@ -1,35 +1,30 @@
-
-<!-- TODO: Pagination -->
-
-<div class="container container--{{ filterStatus() }}">
-
-
-  <!-- TODO: Hero -->
+<div class="container">
   <h1>Events</h1>
 
-  <nav class="actions">
-    <!-- If the user can create Event -->
-    @if (authStore.canCreateEvent()) {
-      <p>You are an admin/author and can create a new event.
-        <a routerLink="/events/new">Create New Event</a>
-      </p>
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else {
+
+    @if (paginatedEvents.length > 0) {
+      <ol class="approved-events">
+        @for (event of paginatedEvents; track event.id) {
+          <li>
+            <app-event-list-item
+              [event]="event"
+              (clicked)="onItemClicked(event)" />
+          </li>
+        }
+      </ol>
+
+      <app-pagination
+        [currentPage]="currentPage()"
+        [totalPages]="totalPages()"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+
+    } @else {
+      <p>No events found.</p>
     }
-
-    <!-- If the user can review Events -->
-    @if (authStore.canReviewEvents()) {
-      <p>You are an admin and can review events.
-        <a routerLink="/events/review">Review Pending Events</a>
-      </p>
-    }
-  </nav>
-
-  <div *ngIf="eventStore.loading$$(); else eventList">
-    Loading events...
-  </div>
-
-  <ng-template #eventList>
-    <app-event-list [events]="filteredEvents()" [loading]="loading" [error]="error"></app-event-list>
-  </ng-template>
-
-  <!-- TODO: Handle errors -->
+  }
 </div>

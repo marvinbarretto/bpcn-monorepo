@@ -8,9 +8,9 @@ import { FormsModule } from '@angular/forms';
     styleUrl: './pagination.component.scss'
 })
 export class PaginationComponent {
-  @Input() currentPage: number = 1;
-  @Input() totalPages: number = 0;
-  @Input() pageSize: number = 10;
+  @Input() currentPage = 1;
+  @Input() totalPages = 0;
+  @Input() pageSize = 10;
 
   @Output() pageChange = new EventEmitter<number>();
 
@@ -30,5 +30,11 @@ export class PaginationComponent {
     if (page >= 1 && page <= this.totalPages) {
       this.pageChange.emit(page);
     }
+  }
+
+  get pageNumbers(): number[] {
+    const pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    console.log(`[PaginationComponent] Total pages: ${this.totalPages}, pages:`, pages);
+    return pages;
   }
 }

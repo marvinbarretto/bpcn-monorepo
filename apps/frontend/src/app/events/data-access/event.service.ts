@@ -54,8 +54,6 @@ export class EventService extends StrapiService {
       );
   }
 
-
-
   createEvent(event: IEvent): Observable<IEvent> {
     const payload: IEventsRequest = { data: event };
 

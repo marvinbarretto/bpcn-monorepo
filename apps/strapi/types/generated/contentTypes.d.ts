@@ -389,6 +389,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     eventStatus: Schema.Attribute.Enumeration<
       ['Pending', 'Approved', 'Rejected', 'Archived']
     >;
+    featured: Schema.Attribute.Boolean;
     hero: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &

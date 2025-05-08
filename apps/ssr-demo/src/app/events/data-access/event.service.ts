@@ -1,68 +1,36 @@
 import { Injectable } from '@angular/core';
 import { StrapiService } from '../../shared/data-access/strapi.service';
-import { Observable, map, catchError } from 'rxjs';
-import { IEvent, IEventsResponse, IEventsRequest } from '../utils/event.model';
+import { Observable, map, catchError, of } from 'rxjs';
+import { EventModel, StrapiEvent, StrapiEventsResponse } from '../utils/event.model';
+import { HttpParams } from '@angular/common/http';
+import { normaliseEvent } from '../utils/event.normaliser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService extends StrapiService {
+  getEventBySlug(slug: string): Observable<EventModel | null> {
+    const params = new HttpParams()
+      .set('filters[slug][$eq]', slug)
+      .set('populate', '*');
 
-  /**
-   * Fetch all events from the server without filtering
-   */
-  getAllEvents(): Observable<IEvent[]> {
-    return this.get<IEventsResponse>('events')
-      .pipe(
-        map(response => response.data),
-        catchError(this.handleError)
-      );
-  }
-
-  /**
-   * @deprecated Use getAllEvents() instead
-   */
-  getEvents(): Observable<IEvent[]> {
-    // TODO: REthink strategy, i think probably we should
-    // just use the getEvent() method to get everything instead of populating with all here...
-    return this.get<IEventsResponse>('events')
-      .pipe(
-        map(response => response.data),
-        catchError(this.handleError)
-      );
-  }
-
-
-  /**
-   * Fetch only upcoming events from the server
-   */
-  getUpcomingEvents(): Observable<IEvent[]> {
-    const now = new Date().toISOString();
-    const url = `events?filters[date][$gte]=${now}&sort=date:asc`;
-    return this.get<IEventsResponse>(url).pipe(
-      map(response => response.data),
-      catchError(this.handleError)
+    return this.get<StrapiEventsResponse>('events', { params }).pipe(
+      map(res => res.data[0] ?? null),
+      map(raw => raw ? normaliseEvent(raw) : null),
+      catchError(error => {
+        console.error('Error fetching event:', error);
+        return of(null);
+      })
     );
   }
-  
 
-  getEvent(documentId: string): Observable<IEvent> {
-    return this.get<{ data: IEvent }>(`events/${documentId}?populate=*`)
-      .pipe(
-        map(response => response.data),
-        catchError(this.handleError)
-      );
-  }
-
-
-
-  createEvent(event: IEvent): Observable<IEvent> {
-    const payload: IEventsRequest = { data: event };
-
-    return this.post<{ data: IEvent }>('events', payload)
-      .pipe(
-        map(response => response.data),
-        catchError(this.handleError)
-      );
+  getEvents(): Observable<EventModel[]> {
+    return this.get<StrapiEventsResponse>('events?populate=*').pipe(
+      map(res => res.data.map(normaliseEvent)),
+      catchError(error => {
+        console.error('Error fetching events:', error);
+        return of([]);
+      })
+    );
   }
 }

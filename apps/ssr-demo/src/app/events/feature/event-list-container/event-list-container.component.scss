@@ -1,8 +1,3 @@
-.container--approved {
-}
-
-.container--pending {
-}
 
 :host {
   display: block;
@@ -19,3 +14,23 @@
 }
 
 
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin: 1rem;
+}
+
+.event-list__item {
+  background-color: rgba(black, .1);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  text-decoration: none;
+  padding: 1rem;
+  font-size: 1.25rem;
+  &:hover {
+    background-color: rgba(white, .5); // TODO: standardise
+  }
+}
