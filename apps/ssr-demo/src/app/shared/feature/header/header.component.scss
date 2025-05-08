@@ -1,6 +1,6 @@
 
 @use "styles/abstracts/_breakpoints" as *;
-
+@use "styles/base/_typography" as *;
 
 // TODO: Clean this up proper
 
@@ -29,14 +29,13 @@ $text-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   flex-direction: column-reverse;
 }
 
 .header__title {
   background-color: #1a2e3d; // #333;
   color: #cc945f; // white;
-
+  @include site-heading;
   text-decoration: none;
   padding: 1rem;
   line-height: 1.2;
@@ -46,6 +45,7 @@ $text-color: white;
 
 .header__title h1 {
   font-size: 3rem;
+  @include site-heading;
 }
 
 .label {

@@ -1,3 +1,4 @@
+@use 'styles/base/typography' as *;
 
 :host {
   display: block;
@@ -5,6 +6,10 @@
 
 .container {
   margin: 1rem;
+}
+
+h1 {
+  @include page-heading;
 }
 
 .actions {
@@ -17,6 +22,11 @@
 }
 
 
+ol {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
 
 .event-list {
   display: flex;
@@ -32,8 +42,8 @@
   justify-content: space-between;
   text-decoration: none;
   padding: 1rem;
-  font-size: 1.25rem;
   &:hover {
     background-color: rgba(white, .5); // TODO: standardise
   }
 }
+
