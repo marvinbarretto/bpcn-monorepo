@@ -21,8 +21,8 @@ WORKDIR /app
 COPY . .
 
 # Copy over the built admin UI
-COPY --from=builder /app/.cache /app/.cache
-COPY --from=builder /app/build /app/build
+COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/.strapi /app/.strapi
 
 # Install only production deps
 RUN npm ci --omit=dev
