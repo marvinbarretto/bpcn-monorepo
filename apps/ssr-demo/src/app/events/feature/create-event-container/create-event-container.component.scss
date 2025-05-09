@@ -1,8 +1,8 @@
 @use "styles/index" as *;
-@use "styles/base/typography" as *;
+
 
 h1 {
-  @include page-heading;
+  @include heading(2);
 }
 
 div {

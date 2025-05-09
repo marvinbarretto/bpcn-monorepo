@@ -13,7 +13,7 @@ import { AssetUrlPipe } from '../../../shared/utils/pipes/asset-url.pipe';
   templateUrl: './event-detail.component.html',
   styles: `
     @use 'styles/index' as *;
-    @use 'styles/base/typography' as *;
+    
 
     .container {
       margin: 1rem;
@@ -27,7 +27,7 @@ import { AssetUrlPipe } from '../../../shared/utils/pipes/asset-url.pipe';
     }
 
     h1 {
-      @include page-heading;
+      @include heading(2);
     }
     `,
 })

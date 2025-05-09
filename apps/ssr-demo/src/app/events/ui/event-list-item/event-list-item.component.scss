@@ -1,5 +1,5 @@
 @use 'styles/index' as *;
-@use 'styles/base/typography' as *;
+
 
 .event-list__item {
     background-color: rgba(black, .1);
@@ -15,5 +15,5 @@
 }
 
 h3 {
-    @include section-heading;
+    @include heading(3);
 }

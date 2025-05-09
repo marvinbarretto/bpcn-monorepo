@@ -1,13 +1,15 @@
+@use 'styles/index' as *;
+
 .panel-backdrop {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 999; // just below .panel-wrapper
+  top: 0;
+  background-color: var(--color-overlay, rgba(0, 0, 0, 0.4));
+  z-index: 999;
   pointer-events: auto;
 }
-
 
 .panel-wrapper {
   position: absolute;
@@ -17,9 +19,35 @@
 }
 
 .panel-content {
-  background: white;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  box-shadow: 0 2px 12px var(--color-shadow, rgba(0, 0, 0, 0.15));
   width: 100%;
   margin: 0 auto;
   padding: 1rem;
+
+  &:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
 }

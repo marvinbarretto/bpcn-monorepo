@@ -1,16 +1,14 @@
-<!-- theme-selector.component.html -->
 <nav aria-label="Theme selector">
-    <ul>
-      <li *ngFor="let theme of themeOptions">
-        <a
-          href="#"
-          (click)="setTheme(theme); $event.preventDefault()"
-          [attr.aria-current]="theme === currentTheme ? 'page' : null"
-          [class.active]="theme === currentTheme"
-        >
-          {{ theme }}
-        </a>
-      </li>
-    </ul>
-  </nav>
-  
+  <ul>
+    <li *ngFor="let theme of themeOptions">
+      <button
+        type="button"
+        (click)="setTheme(theme)"
+        [attr.aria-pressed]="theme === currentTheme"
+        [class.active]="theme === currentTheme"
+      >
+        {{ theme }}
+      </button>
+    </li>
+  </ul>  
+</nav>

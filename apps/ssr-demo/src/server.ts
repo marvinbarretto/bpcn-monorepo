@@ -12,6 +12,8 @@ import bootstrap from './main.server';
 import dotenv from 'dotenv';
 import { getRedisClient } from '../server/redis/redis.client';
 import newsRoute from '../server/routes/news.route';
+import { USER_THEME_TOKEN } from './libs/tokens/user-theme.token';
+import cookieParser from 'cookie-parser';
 
 // === Load environment variables ===
 dotenv.config();
@@ -43,6 +45,7 @@ const engine = new CommonEngine();
 // === Middlewares ===
 app.use(compression());
 app.use(cors());
+app.use(cookieParser());
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -75,11 +78,14 @@ app.get(
   })
 );
 
+
 // === SSR Render Middleware ===
 app.get('*', (req, res) => {
   const { protocol, headers, originalUrl, baseUrl } = req;
   const fullUrl = `${protocol}://${headers.host}${originalUrl}`;
   log(`[${req.method}] ${originalUrl}`);
+
+  const theme = req.cookies['userTheme'] ?? 'Default';
 
   const environment = {
     strapiUrl: process.env['STRAPI_URL'] || 'http://localhost:1337',
@@ -98,6 +104,7 @@ app.get('*', (req, res) => {
         { provide: APP_BASE_HREF, useValue: baseUrl },
         { provide: 'INITIAL_ENV', useValue: environment },
         { provide: 'INITIAL_AUTH_STATE', useValue: { user: null, token: null } },
+        { provide: USER_THEME_TOKEN, useValue: theme },
       ],
     })
     .then(html => res.send(html))

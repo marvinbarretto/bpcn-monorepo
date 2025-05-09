@@ -1,58 +1,49 @@
 @use "styles/index" as *;
-@use "styles/base/typography" as *;
-// TODO: Clean this up proper
 
-a, button {
-  font-size: 1rem;
-  line-height: 1;
-
-}
-
-nav {
-  display: flex;
-  background-color: rgba(blue, .1);
-}
-
-$header-bg-color: #333;
-$menu-bg-color: #444;
-$text-color: white;
+// TODO: Brand colours need to be centralised:
+// background-color: #1a2e3d; // #333;
+// color: #cc945f; // white;
 
 :host {
   display: block;
 }
 
+nav {
+  display: flex;
+}
+
 .header {
-  color: $text-color;
   text-align: center;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column-reverse;
+  color: var(--color-text);
 }
 
 .header__title {
-  background-color: #1a2e3d; // #333;
-  color: #cc945f; // white;
-  @include site-heading;
-  text-decoration: none;
-  padding: 1rem;
-  line-height: 1.2;
-  padding: 1rem 2rem;
+  @include heading(1);
   text-align: center;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  color: var(--color-primary);
+  background-color: var(--color-background);
+  line-height: 1.2;
 }
 
 .header__title h1 {
-  font-size: 3rem;
-  @include site-heading;
+  line-height: 1.2;
 }
 
 .label {
   display: none;
+
   @media (min-width: $breakpoint-tablet) {
     display: block;
   }
 }
 
+// === Navigation ===
 
 .main-nav {
   justify-content: space-between;
@@ -68,12 +59,12 @@ $text-color: white;
 }
 
 .menu {
-  background-color: $menu-bg-color;
-  color: white;
   display: flex;
-  gap: .75rem;
+  gap: 0.75rem;
   position: relative;
   z-index: 100;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 
 .menu__list {
@@ -82,20 +73,22 @@ $text-color: white;
   }
 }
 
-a, button {
+a,
+button {
   display: block;
-  @include underline-style;
-  padding: .5rem;
-}
+  padding: 0.5rem;
+  @include link-style;
+  color: var(--color-primary);
+  background: transparent;
+  border: none;
 
-a:hover, button:hover {
-  background-color: black;
-  color: white;
+  &:hover {
+    color: var(--color-accent);
+    background-color: var(--color-overlay);
+  }
 }
-
 
 .link {
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,6 +96,8 @@ a:hover, button:hover {
   align-self: center;
   overflow: hidden;
   text-decoration: none;
+  color: var(--color-primary);
+
   .label {
     @include underline-style;
   }
@@ -114,26 +109,32 @@ nav ul {
 }
 
 .selected {
-  background-color: black;
+  background-color: var(--color-accent);
+  color: var(--color-onAccent);
 }
 
+// === Toggle ===
 
 .menu__toggle {
-  padding: .5rem;
+  padding: 0.5rem;
   cursor: pointer;
-  color: white;
   font-size: 1rem;
   flex: 1;
   text-align: left;
   display: flex;
-  gap: .25rem;
+  gap: 0.25rem;
   align-items: center;
   justify-content: flex-start;
+  background: none;
+  color: var(--color-text);
+
   @media (min-width: $breakpoint-tablet) {
     display: none;
   }
+
   &:hover {
-    background-color: white;
+    background-color: var(--color-background);
+    color: var(--color-accent);
   }
 }
 
@@ -141,28 +142,28 @@ nav ul {
   @include underline-style;
 }
 
-
 .menu--mobile .menu__toggle {
   display: flex;
 }
 
-@media screen and (min-width: 601px) {
-  /* Ensure the navigation is always visible on desktop */
+// === Responsive ===
+
+@include respond-above($nav-breakpoint) {
   .menu__list {
     display: flex;
   }
 
   .menu__toggle {
-    display: none; /* Hide toggle button on desktop */
+    display: none;
   }
 }
 
 .menu--open {
   position: fixed;
-
   width: 100%;
   flex-direction: column;
   gap: 0;
+
   .a11y-link {
     width: 100%;
   }

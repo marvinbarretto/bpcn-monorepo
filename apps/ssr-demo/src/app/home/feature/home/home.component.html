@@ -1,28 +1,22 @@
-<section class="hero" *ngIf="'homepageHero' | featureFlag"></section>
+<!-- <section class="hero" *ngIf="'homepageHero' | featureFlag"></section> -->
 
-  <div class="sections">
-    <app-next-event-widget></app-next-event-widget>
-    <app-recent-news-widget></app-recent-news-widget>
+<div class="sections">
+  <app-next-event-widget></app-next-event-widget>
+  <app-recent-news-widget></app-recent-news-widget>
 
-    @if (!authStore.isAuthenticated$$()) {
-      <section>
-        Encourage to register....
-      </section>
-    }
-    
+  @if (!authStore.isAuthenticated$$()) {
     <section>
-      <h2>Featured event</h2>
-      <p>...</p>
+      Encourage to register....
     </section>
+  }
+  
+  <section>
+    <h2>Featured event</h2>
+    <p>...</p>
+  </section>
 
-    <section>
-      <h2>Feedback</h2>
-      <p>...</p>
-    </section>
-
-  </div>
-
-
-
-
-
+  <section>
+    <h2>Feedback</h2>
+    <p>...</p>
+  </section>
+</div>

@@ -1,27 +1,41 @@
 @use 'styles/index' as *;
 
-ul {
-    background-color: rgba(black, .1);
-}
+.menu__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 
-.desktop {
+  &.desktop {
     display: flex;
-    background-color: rgba(black, .2);
-}
+    background-color: var(--color-background);
+  }
 
-a { 
+  &.mobile {
     display: block;
-    @include underline-style;
-    padding: 0.5rem;
-    font-size: 1rem;
-    line-height: 1;
+    background-color: var(--color-background);
+  }
 
-    &:hover {
-        background-color: white;
+  li {
+    a {
+      display: block;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      line-height: 1.2;
+      color: var(--color-text);
+      text-decoration: none;
+      @include underline-style;
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      &:hover {
+        background-color: color-mix(in srgb, var(--color-background) 90%, var(--color-accent) 10%);
+        color: var(--color-onAccent);
+      }
+
+      &.active {
+        background-color: var(--color-primary);
+        color: var(--color-onPrimary);
+        font-weight: bold;
+      }
     }
-}
-
-.active {
-    background-color: white;
-    // TODO: Change
+  }
 }

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeStore } from '../../data-access/theme.store';
 import { ThemeType } from '../../utils/theme.tokens';
+import { ALL_THEME_TYPES } from '../../utils/theme.tokens';
 
 @Component({
   selector: 'app-theme-selector',
@@ -12,14 +13,7 @@ import { ThemeType } from '../../utils/theme.tokens';
 export class ThemeSelectorComponent {
   private readonly themeStore = inject(ThemeStore);
 
-  themeOptions: ThemeType[] = [
-    'Default',
-    'HighContrast',
-    'Tritanopia',
-    'LowContrast',
-    'Purple',
-    'RedGreen'
-  ];
+  themeOptions: ThemeType[] = ALL_THEME_TYPES;
 
   setTheme(type: ThemeType) {
     this.themeStore.setTheme(type);
