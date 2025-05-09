@@ -60,6 +60,36 @@ Environment variables (e.g., APP_KEYS, DATABASE_URL, STRAPI_URL, etc.) must be d
 
 Railway autodetects Dockerfiles and builds accordingly.
 
+🚀 Deployment Strategy (Railway + Docker)
+This monorepo deploys two services to Railway using Docker:
+
+🔧 Structure
+Frontend (Angular SSR) lives in: apps/frontend
+
+Backend (Strapi CMS) lives in: apps/strapi
+
+Each app folder contains:
+
+A Dockerfile that builds and runs the service
+
+A .dockerignore to keep images lean
+
+A railway.json that tells Railway how to build and deploy the container
+
+🐳 Deployment
+Frontend runs Angular Universal SSR via Node.js (node dist/.../server.mjs) and exposes port 4000
+
+Strapi serves its CMS on port 1337
+
+Each service is deployed as a separate Railway Service and has its own settings
+
+You can trigger deployments by pushing to GitHub (via Railway integration) or manually
+
+✅ Health
+Frontend health check: /
+
+Strapi health check: / or /api/_health depending on what’s enabled
+
 🧪 Troubleshooting Tips
 If Strapi fails to boot, check for missing APP_KEYS, database issues, or missing plugins.
 
