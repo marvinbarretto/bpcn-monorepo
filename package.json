@@ -6,7 +6,9 @@
     "start": "nx serve frontend",
     "build": "nx build frontend",
     "test": "nx test frontend",
-    "dev:ssr": "nx run frontend:serve-ssr"
+    "dev:ssr": "nx run frontend:serve-ssr",
+    "start-strapi": "cd apps/strapi && strapi start",
+    "build-strapi": "cd apps/strapi && strapi build"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +29,7 @@
     "@strapi/plugin-users-permissions": "5.1.0",
     "@strapi/strapi": "5.1.0",
     "axios": "1.7.7",
+    "better-sqlite3": "11.10.0",
     "compression": "1.8.0",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
