@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   enableAllFeaturesInDevelopment: true,
-  strapiUrl: 'STRAPI_URL',
+  strapiUrl: 'http://127.0.0.1:1337',
   strapiToken: 'STRAPI_TOKEN',
   featureFlags: {
     homepageHero: false,
