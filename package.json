@@ -8,7 +8,8 @@
     "test": "nx test frontend",
     "dev:ssr": "nx run frontend:serve-ssr",
     "start-strapi": "cd apps/strapi && strapi start",
-    "build-strapi": "cd apps/strapi && strapi build"
+    "build-strapi": "cd apps/strapi && strapi build",
+    "preinstall": "node ./scripts/enforce-npm-ci.js"
   },
   "private": true,
   "dependencies": {
