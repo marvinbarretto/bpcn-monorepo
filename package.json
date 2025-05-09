@@ -4,10 +4,11 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "nx build frontend",
+    "build": "nx build frontend --configuration=production",
     "dev:ssr": "nx run frontend:serve-ssr",
-    "start": "nx serve frontend",
-    "test": "nx test frontend"
+    "start": "nx serve frontend --configuration=production",
+    "test": "nx test frontend",
+    "build:ssr": "nx run frontend:build:ssr"
   },
   "dependencies": {
     "@angular/animations": "^19.0.0",

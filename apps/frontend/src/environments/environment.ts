@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
   enableAllFeaturesInDevelopment: true,
-  strapiUrl: process.env['NX_STRAPI_URL'] || 'http://127.0.0.1:1337',
-  strapiToken: process.env['NX_STRAPI_TOKEN'] || '',
+  strapiUrl: 'http://localhost:1337',
+  strapiToken: '',
   featureFlags: {
     homepageHero: false,
     homepageNewsWidget: false,

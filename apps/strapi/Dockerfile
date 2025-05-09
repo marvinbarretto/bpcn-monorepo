@@ -1,36 +1,32 @@
-# Stage 1: Build the admin panel
+# Stage 1: Build the Strapi admin panel
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# Copy only the files needed for install and build
+COPY ../../package.json ../../package-lock.json ./
 COPY . .
 
-# Install deps
+# Install full deps
 RUN npm ci
 
-# Build admin UI
+# Build Strapi admin UI
 RUN npm run build
 
-
-# Stage 2: Run Strapi app
+# Stage 2: Run Strapi with only production dependencies
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy everything except node_modules
-COPY . .
+# Copy the built app from builder
+COPY --from=builder /app /app
 
-# Copy over the built admin UI
-COPY --from=builder /app/dist /app/dist
-COPY --from=builder /app/.strapi /app/.strapi
-
-# Install only production deps
+# Clean dev deps to shrink image size
 RUN npm ci --omit=dev
 
-# Expose Strapi port
 EXPOSE 1337
 
-# Healthcheck (optional, can remove if not needed)
+# Optional: Add a healthcheck (can remove if not needed)
 HEALTHCHECK --interval=10s --timeout=3s \
   CMD wget --no-verbose --tries=1 --spider http://localhost:1337 || exit 1
 

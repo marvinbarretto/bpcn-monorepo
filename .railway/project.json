@@ -1,4 +1,0 @@
-{
-  "build": "npm install && npm run build-strapi",
-  "start": "npm run start-strapi"
-}

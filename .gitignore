@@ -54,3 +54,4 @@ backend/src/extensions/documentation/*
 apps/frontend/src/environments/environment.local.ts
 
 .vscode/settings.json
+.vercel

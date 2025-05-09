@@ -1,0 +1,23 @@
+# Node + build outputs
+node_modules
+build
+.cache
+dist
+
+# Logs and temp
+npm-debug.log
+yarn-error.log
+
+# Env files
+.env
+.env.*  # catches .env.local, .env.production, etc.
+
+# Local-only scripts (e.g., seeding/migration tools)
+scripts
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Nx cache (optional, speeds up image build context)
+nx-out
