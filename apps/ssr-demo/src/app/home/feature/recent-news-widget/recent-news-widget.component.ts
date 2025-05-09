@@ -2,17 +2,19 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewsService } from '../../../news/data-access/news.service';
 import { NewsSnippet } from '../../../news/utils/news/news.model';
-import { RelativeDatePipe } from "../../../shared/utils/pipes/relative-date.pipe";
 import { RouterModule } from '@angular/router';
+import { NotificationService } from '../../../shared/data-access/notification.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-recent-news-widget',
-  imports: [CommonModule, RelativeDatePipe, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './recent-news-widget.component.html',
   styleUrl: './recent-news-widget.component.scss',
 })
 export class RecentNewsWidgetComponent {
   private readonly newsService = inject(NewsService);
+  private readonly notificationService = inject(NotificationService);
 
   readonly news$$ = signal<NewsSnippet[]>([]);
   readonly loaded$$ = computed(() => this.news$$().length > 0);
@@ -23,8 +25,16 @@ export class RecentNewsWidgetComponent {
   });
   
   constructor() {
-    this.newsService.getNews().subscribe(news => this.news$$.set(news));
+    this.newsService.getNews()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (news) => {
+          this.news$$.set(news);
+        },
+        error: (err) => {
+          // TODO: Replace with ToastService
+          // this.notificationService.error(err);
+        }
+      });
   }
-
-  
 }

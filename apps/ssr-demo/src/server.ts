@@ -1,5 +1,3 @@
-console.log('🔧 Starting custom SSR server setup...');
-
 import 'zone.js/node';
 
 import { APP_BASE_HREF } from '@angular/common';
@@ -15,8 +13,16 @@ import dotenv from 'dotenv';
 import { getRedisClient } from '../server/redis/redis.client';
 import newsRoute from '../server/routes/news.route';
 
-// Load environment variables
+// === Load environment variables ===
 dotenv.config();
+
+const isDev = process.env['NODE_ENV'] !== 'production';
+function log(...args: unknown[]) {
+  if (isDev) console.log('[SSR]', ...args);
+}
+function logError(...args: unknown[]) {
+  console.error('[SSR:ERROR]', ...args);
+}
 
 const app = express();
 app.set('trust proxy', 1);
@@ -27,27 +33,14 @@ const indexHtml = existsSync(join(distFolder, 'index.original.html'))
   ? join(distFolder, 'index.original.html')
   : join(distFolder, 'index.html');
 
-console.log('📁 DIST Folder:', distFolder);
-console.log('📄 Index HTML path:', indexHtml);
-console.log('📦 Bootstrap module:', bootstrap);
-
-if (!existsSync(indexHtml)) {
-  console.error('❌ index.html not found at:', indexHtml);
-}
-
-if (!existsSync(distFolder)) {
-  console.error('❌ DIST folder not found at:', distFolder);
-}
-
-if (!bootstrap) {
-  console.error('❌ Bootstrap module not found');
-}
+if (!existsSync(indexHtml)) logError('index.html not found at:', indexHtml);
+if (!existsSync(distFolder)) logError('DIST folder not found at:', distFolder);
+if (!bootstrap) logError('Bootstrap module not found');
 
 // === SSR Engine ===
 const engine = new CommonEngine();
 
 // === Middlewares ===
-console.log('🔧 Setting up middlewares...');
 app.use(compression());
 app.use(cors());
 app.use(
@@ -58,20 +51,23 @@ app.use(
   })
 );
 
-// === Custom Redis route (example) ===
-console.log('🔧 Setting up custom Redis route...');
+// === Test Redis Route ===
 app.get('/api/test-redis', async (req: Request, res: Response) => {
-  const redis = await getRedisClient();
-  await redis.set('hello', 'world');
-  const value = await redis.get('hello');
-  res.json({ message: 'Redis is working', value });
+  try {
+    const redis = await getRedisClient();
+    await redis.set('hello', 'world');
+    const value = await redis.get('hello');
+    res.json({ message: 'Redis is working', value });
+  } catch (err) {
+    logError('Redis test route failed:', err);
+    res.status(500).json({ error: 'Redis failure' });
+  }
 });
 
-console.log('🔧 Setting up news route...');
+// === Custom Routes ===
 app.use(newsRoute);
 
 // === Static assets ===
-console.log('🔧 Setting up static assets middleware...');
 app.get(
   '*.*',
   express.static(distFolder, {
@@ -79,14 +75,11 @@ app.get(
   })
 );
 
-
-// === SSR render ===
-console.log('🔧 Setting up SSR render middleware...');
-app.get('*', (req, res, next) => {
-  console.log('🌍 Incoming request:', req.method, req.originalUrl);
-  console.log('🧠 Rendering URL:', `${req.protocol}://${req.headers.host}${req.originalUrl}`);
-
+// === SSR Render Middleware ===
+app.get('*', (req, res) => {
   const { protocol, headers, originalUrl, baseUrl } = req;
+  const fullUrl = `${protocol}://${headers.host}${originalUrl}`;
+  log(`[${req.method}] ${originalUrl}`);
 
   const environment = {
     strapiUrl: process.env['STRAPI_URL'] || 'http://localhost:1337',
@@ -95,14 +88,11 @@ app.get('*', (req, res, next) => {
     meiliSearchKey: process.env['MEILISEARCH_KEY'] || '',
   };
 
-  console.log('🌍 SSR Request URL:', `${protocol}://${headers.host}${originalUrl}`);
-  console.log('🌱 Injecting ENV:', environment);
-
   engine
     .render({
       bootstrap,
       documentFilePath: indexHtml,
-      url: `${protocol}://${headers.host}${originalUrl}`,
+      url: fullUrl,
       publicPath: distFolder,
       providers: [
         { provide: APP_BASE_HREF, useValue: baseUrl },
@@ -112,19 +102,23 @@ app.get('*', (req, res, next) => {
     })
     .then(html => res.send(html))
     .catch(err => {
-      console.error('❌ SSR render failed:', err);
+      logError('SSR render failed:', err);
       res.status(500).send('SSR render error');
     });
 });
 
-// === Run ===
-console.log('🔧 Setting up server run function...');
+// === Run the Server ===
 async function run(): Promise<void> {
   const port = process.env['PORT'] || 4000;
-  const redis = await getRedisClient();
+
+  try {
+    await getRedisClient(); // test Redis on startup
+  } catch (err) {
+    logError('Failed to connect to Redis on startup:', err);
+  }
 
   app.listen(port, () => {
-    console.log(`✅ SSR server listening at http://localhost:${port}`);
+    log(`Server listening at http://localhost:${port}`);
   });
 }
 

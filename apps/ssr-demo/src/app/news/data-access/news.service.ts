@@ -30,7 +30,7 @@ export class NewsService {
       }),
       catchError((error: HttpErrorResponse) => {
         console.error('❌ NewsService HTTP Error:', error.message);
-        return throwError(() => new Error('Failed to load news.'));
+        return throwError(() => new Error(`Failed to load news: ${error.message}`));
       })
     );
   }

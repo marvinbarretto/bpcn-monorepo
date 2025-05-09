@@ -29,10 +29,10 @@ export class AuthStore {
 
   constructor() {
     this.platform.onlyOnBrowser(() => {
-      const token = this.cookieService.getCookie('authToken');
-      const user = localStorage.getItem('user');
-      console.log('[AuthStore] Bootstrapping from cookie — token:', token);
-      console.log('[AuthStore] Bootstrapping from localStorage — user:', user);
+      // const token = this.cookieService.getCookie('authToken');
+      // const user = localStorage.getItem('user');
+      // console.log('[AuthStore] Bootstrapping from cookie — token:', token);
+      // console.log('[AuthStore] Bootstrapping from localStorage — user:', user);
   
       this.loadUserFromStorage();
     });

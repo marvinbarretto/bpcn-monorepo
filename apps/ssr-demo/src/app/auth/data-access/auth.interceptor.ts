@@ -6,7 +6,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const cookieService = inject(CookieService);
   const token = cookieService.getCookie('authToken');
 
-  console.log('🛰️ Interceptor hit:', req.url);
+  // console.log('🛰️ Interceptor hit:', req.url);
 
   if (req.url.includes('/auth/local')) {
     console.log('🔓 Skipping auth header for login route');
@@ -14,7 +14,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   if (token && token !== 'null') {
-    console.log('🔐 Attaching token:', token);
+    // console.log('🔐 Attaching token:', token);
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
@@ -25,7 +25,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     // console.log('➡️ Final headers:', req.headers);
 
   } else {
-    console.log('🚫 No token attached for request:', req.url);
+    // console.log('🚫 No token attached for request:', req.url);
   }
 
   return next(req);

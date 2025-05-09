@@ -20,9 +20,6 @@ export function setupSsrRoute(
       meiliSearchKey: process.env['MEILISEARCH_KEY'] || ''
     };
 
-    console.log('🌍 SSR Request URL:', `${protocol}://${headers.host}${originalUrl}`);
-    console.log('🌱 Injecting ENV:', environment);
-
     commonEngine
       .render({
         bootstrap,

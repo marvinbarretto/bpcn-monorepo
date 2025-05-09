@@ -26,7 +26,7 @@ export class PageStore {
 
   private debugLog(message: string, ...args: any[]) {
     this.platform.onlyOnBrowser(() => {
-      console.log(`%c${message}`, 'color: #888;', ...args);
+      console.log(`%c${message}`, 'color: #00F;', ...args);
     });
   }
 

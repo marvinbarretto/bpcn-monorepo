@@ -11,8 +11,6 @@ import { GlobalErrorHandler } from './shared/utils/global-error-handler';
 import { authInterceptor } from './auth/data-access/auth.interceptor';
 import { provideAuthInitializer } from './auth/data-access/auth-initializer';
 
-console.log('✅ Loading app.config.ts...');
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideClientHydration(withEventReplay()),

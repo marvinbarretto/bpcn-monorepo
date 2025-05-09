@@ -34,7 +34,6 @@ export class PaginationComponent {
 
   get pageNumbers(): number[] {
     const pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    console.log(`[PaginationComponent] Total pages: ${this.totalPages}, pages:`, pages);
     return pages;
   }
 }
