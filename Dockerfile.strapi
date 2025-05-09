@@ -1,0 +1,21 @@
+# Stage 1: Build the Strapi admin panel
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+COPY . .
+RUN npm ci
+RUN npm run build
+
+# Stage 2: Run the Strapi app
+FROM node:18-alpine
+
+WORKDIR /app
+COPY . .
+
+COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/.strapi /app/.strapi
+
+RUN npm ci --omit=dev
+
+EXPOSE 1337
+CMD ["npm", "start"]
