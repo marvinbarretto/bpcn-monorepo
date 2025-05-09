@@ -1,0 +1,5 @@
+{
+    "build": "cd ../.. && npm install && cd apps/strapi && npm run build",
+    "start": "node ./dist/index.js"
+  }
+  
