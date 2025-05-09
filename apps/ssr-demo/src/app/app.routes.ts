@@ -36,7 +36,6 @@ export const appRoutes: Routes = [
   {
     path: 'events',
     loadChildren: () => import('./events/events.routes').then(m => m.EVENTS_ROUTES),
-    canActivate: [authGuard],
     data: { title: 'Events' }
   },
   // Only works for single-segment routes

@@ -28,7 +28,13 @@
           flex-direction: column;
           justify-content: space-between;
           align-items: baseline;
-  
+ 
+          background: white;
+          padding: 1rem;
+          font-size: smaller;
+          font-style: italic;
+
+
           .date {
             font-size: 0.75rem;
             color: #999;

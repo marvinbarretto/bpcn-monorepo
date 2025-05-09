@@ -23,10 +23,29 @@ h1 { font-size: 2rem; }
 h2 { font-size: 1.5rem; }
 h3 { font-size: 1.25rem; }
 
+@mixin eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--eyebrow-color, #666);
+  letter-spacing: 0.05em;
+}
+
+@mixin date-text {
+  font-size: 0.875rem;
+  color: var(--date-color, #444);
+}
+
+@mixin link-style {
+  display: block;
+  padding: 0.5rem;
+  @include underline-style;
+}
+
 @mixin barlow-condensed {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 600;
   font-style: italic;
+
 }
 
 @mixin site-heading {

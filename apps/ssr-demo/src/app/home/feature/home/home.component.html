@@ -1,34 +1,26 @@
-
-
 <section class="hero" *ngIf="'homepageHero' | featureFlag"></section>
 
-<div class="sections">
+  <div class="sections">
+    <app-next-event-widget></app-next-event-widget>
+    <app-recent-news-widget></app-recent-news-widget>
 
+    @if (!authStore.isAuthenticated$$()) {
+      <section>
+        Encourage to register....
+      </section>
+    }
+    
+    <section>
+      <h2>Featured event</h2>
+      <p>...</p>
+    </section>
 
-  <app-next-event-widget></app-next-event-widget>
+    <section>
+      <h2>Feedback</h2>
+      <p>...</p>
+    </section>
 
-  <app-recent-news-widget></app-recent-news-widget>
-
-
-  <!-- TODO: !authStore.isAuthenticated() not working -->
-  <section class="promote-event">
-    <h2>Promote your event</h2>
-    <p>
-      <a routerLink="/register">Register now</a> to start creating and sharing events!
-    </p>
-  </section>
-
-  <section>
-    <h2>Featured event</h2>
-    <p>...</p>
-  </section>
-
-  <section>
-    <h2>Feedback</h2>
-    <p>...</p>
-  </section>
-
-</div>
+  </div>
 
 
 

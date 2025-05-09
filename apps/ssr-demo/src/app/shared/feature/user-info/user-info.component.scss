@@ -6,7 +6,9 @@
 }
 
 .authenticate {
-  background-color: rgba(black, .5);
+  background-color: #121f29; // rgba(black, .5);
+  color: #FFFFEE;
+
   display: flex;
   align-items: center;
 
@@ -34,7 +36,8 @@
 
 
 .user-info {
-  background-color: rgba(darkgreen, .5);
+  background-color: #121f29; // rgba(darkgreen, .5);
+  color: #FFFFEE;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -51,7 +54,7 @@
 }
 
 .role {
-  background-color: rgba(black, .1);
+  background-color: rgba(white, .1);
   font-size: .75rem;
   display: inline-flex;
   align-items: center;
@@ -59,8 +62,8 @@
 }
 
 button {
-  background-color: rgba(black, .5);
-  color: white;
+  background-color: #FC0;
+  color: black;
   padding: 0.5rem;
 
 

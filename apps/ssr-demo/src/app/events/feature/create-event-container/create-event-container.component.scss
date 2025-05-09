@@ -1,3 +1,10 @@
+@use "styles/index" as *;
+@use "styles/base/typography" as *;
+
+h1 {
+  @include page-heading;
+}
+
 div {
   padding: 1rem;
 }

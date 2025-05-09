@@ -10,7 +10,26 @@ import { AssetUrlPipe } from '../../../shared/utils/pipes/asset-url.pipe';
 @Component({
   selector: 'app-event-detail',
   imports: [CommonModule, RouterModule, DaysUntilPipe, AssetUrlPipe],
-  templateUrl: './event-detail.component.html'
+  templateUrl: './event-detail.component.html',
+  styles: `
+    @use 'styles/index' as *;
+    @use 'styles/base/typography' as *;
+
+    .container {
+      margin: 1rem;
+    }
+    
+    .event-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      
+    }
+
+    h1 {
+      @include page-heading;
+    }
+    `,
 })
 export class EventDetailComponent {
   @Input({required: true}) event!: EventModel;

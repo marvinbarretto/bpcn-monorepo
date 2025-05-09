@@ -1,7 +1,5 @@
-
-@use "styles/abstracts/_breakpoints" as *;
-@use "styles/base/_typography" as *;
-
+@use "styles/index" as *;
+@use "styles/base/typography" as *;
 // TODO: Clean this up proper
 
 a, button {
@@ -86,9 +84,7 @@ $text-color: white;
 
 a, button {
   display: block;
-  text-decoration: underline;
-  text-decoration-thickness: max(1px, .0625rem);
-  text-underline-offset: .3em;
+  @include underline-style;
   padding: .5rem;
 }
 
@@ -108,9 +104,7 @@ a:hover, button:hover {
   overflow: hidden;
   text-decoration: none;
   .label {
-    text-decoration: underline;
-    text-decoration-thickness: max(1px, .0625rem);
-    text-underline-offset: .3em;
+    @include underline-style;
   }
 }
 
@@ -144,9 +138,7 @@ nav ul {
 }
 
 .menu__toggle__label {
-  text-decoration: underline;
-  text-decoration-thickness: max(1px, .0625rem);
-  text-underline-offset: .3em;
+  @include underline-style;
 }
 
 

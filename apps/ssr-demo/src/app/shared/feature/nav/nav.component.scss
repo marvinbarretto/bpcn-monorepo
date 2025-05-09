@@ -1,17 +1,17 @@
+@use 'styles/index' as *;
+
 ul {
-    background-color: rgba(green, .1);
+    background-color: rgba(black, .1);
 }
 
 .desktop {
     display: flex;
-    background-color: beige;
+    background-color: rgba(black, .2);
 }
 
 a { 
     display: block;
-    text-decoration: underline;
-    text-decoration-thickness: max(1px, 0.0625rem);
-    text-underline-offset: 0.3em;
+    @include underline-style;
     padding: 0.5rem;
     font-size: 1rem;
     line-height: 1;
@@ -23,4 +23,5 @@ a {
 
 .active {
     background-color: white;
+    // TODO: Change
 }
