@@ -16,8 +16,8 @@ export default [
     name: 'strapi::cors',
     config: {
       origin: ['http://localhost:4200'], // allow your Angular frontend
-      credentials: true
-    }
+      credentials: true,
+    },
   },
   'strapi::poweredBy',
   'strapi::query',

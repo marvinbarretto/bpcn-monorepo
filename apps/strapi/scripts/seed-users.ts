@@ -59,12 +59,12 @@ async function run() {
     roleMap[role.name] = role.id;
   }
 
-  const missingRoles = requiredRoles.filter(role => !roleMap[role]);
+  const missingRoles = requiredRoles.filter((role) => !roleMap[role]);
   if (missingRoles.length > 0) {
     console.error(`❌ Missing required roles: ${missingRoles.join(', ')}`);
     console.warn(
       `💡 Please create these roles in the Strapi Admin UI before running this script.\n` +
-      `   Then re-run: npm seed:users`
+        `   Then re-run: npm seed:users`
     );
     process.exit(1);
   }
@@ -87,30 +87,40 @@ async function run() {
       const registerData = await registerRes.json();
 
       if (!registerRes.ok) {
-        console.warn(`⚠️  Failed to register ${user.email}: ${registerData.error?.message || registerRes.statusText}`);
+        console.warn(
+          `⚠️  Failed to register ${user.email}: ${
+            registerData.error?.message || registerRes.statusText
+          }`
+        );
         continue;
       }
 
       const createdUser = registerData.user;
       const roleId = roleMap[user.roleName];
 
-      const assignRoleRes = await fetch(`${baseUrl}/api/users/${createdUser.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${ADMIN_TOKEN}`, // ✅ Use the admin token here
-        },
-        body: JSON.stringify({ role: roleId }),
-      });
-      
+      const assignRoleRes = await fetch(
+        `${baseUrl}/api/users/${createdUser.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${ADMIN_TOKEN}`, // ✅ Use the admin token here
+          },
+          body: JSON.stringify({ role: roleId }),
+        }
+      );
 
       if (!assignRoleRes.ok) {
         const errData = await assignRoleRes.json();
-        console.error(`❌ Failed to assign role to ${user.email}: ${errData.error?.message}`);
+        console.error(
+          `❌ Failed to assign role to ${user.email}: ${errData.error?.message}`
+        );
         continue;
       }
 
-      console.log(`✅ Created user ${user.username} with role ${user.roleName}`);
+      console.log(
+        `✅ Created user ${user.username} with role ${user.roleName}`
+      );
     } catch (err: any) {
       console.error(`❌ Unexpected error for ${user.email}:`, err.message);
     }

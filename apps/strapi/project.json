@@ -1,24 +1,23 @@
 {
-    "name": "strapi",
-    "projectType": "application",
-    "sourceRoot": "apps/strapi",
-    "targets": {
-      "serve": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npm run develop",
-          "cwd": "apps/strapi",
-          "color": true
-        }
-      },
-      "build": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npm run build",
-          "cwd": "apps/strapi"
-        }
+  "name": "strapi",
+  "projectType": "application",
+  "sourceRoot": "apps/strapi",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run develop",
+        "cwd": "apps/strapi",
+        "color": true
       }
     },
-    "tags": []
-  }
-  
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build",
+        "cwd": "apps/strapi"
+      }
+    }
+  },
+  "tags": []
+}

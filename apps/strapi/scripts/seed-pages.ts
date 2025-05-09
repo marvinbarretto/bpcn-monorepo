@@ -10,7 +10,9 @@ const TOKEN = process.env.STRAPI_SEEDER_TOKEN;
 
 async function seedPages() {
   if (!TOKEN) {
-    console.error('❌ STRAPI_SEEDER_TOKEN is missing from environment variables.');
+    console.error(
+      '❌ STRAPI_SEEDER_TOKEN is missing from environment variables.'
+    );
     process.exit(1);
   }
 
@@ -24,8 +26,8 @@ async function seedPages() {
       description: 'Learn more about our history and mission.',
       primaryNavigation: true,
       seo: [],
-      hero: null
-    }
+      hero: null,
+    },
   ];
 
   for (const page of pages) {
@@ -34,9 +36,9 @@ async function seedPages() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`
+          Authorization: `Bearer ${TOKEN}`,
         },
-        body: JSON.stringify({ data: page })
+        body: JSON.stringify({ data: page }),
       });
 
       const json = await res.json();

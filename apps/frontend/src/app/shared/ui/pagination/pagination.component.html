@@ -1,0 +1,28 @@
+<nav class="pagination" *ngIf="totalPages > 1">
+  <p>
+    Page <b>{{ currentPage }}</b> of <b>{{ totalPages }}</b>
+  </p>
+
+  <div class="buttons">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">
+      <span class="material-symbols-outlined">arrow_back</span>
+      <span>Previous</span>
+    </button>
+
+    <ng-container *ngFor="let page of pageNumbers">
+      <button
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+        [attr.aria-label]="'Go to page ' + page"
+        [attr.aria-current]="page === currentPage ? 'page' : null"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      <span>Next</span>
+      <span class="material-symbols-outlined">arrow_forward</span>
+    </button>
+  </div>
+</nav>

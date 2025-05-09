@@ -10,7 +10,9 @@ const TOKEN = process.env.STRAPI_SEEDER_TOKEN;
 
 async function seedEvents() {
   if (!TOKEN) {
-    console.error('❌ STRAPI_SEEDER_TOKEN is missing from environment variables.');
+    console.error(
+      '❌ STRAPI_SEEDER_TOKEN is missing from environment variables.'
+    );
     process.exit(1);
   }
 
@@ -25,8 +27,8 @@ async function seedEvents() {
       slug: 'guild-summer-meetup',
       content: [], // Empty block content
       seo: null,
-      hero: null
-    }
+      hero: null,
+    },
   ];
 
   for (const event of events) {
@@ -35,9 +37,9 @@ async function seedEvents() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`
+          Authorization: `Bearer ${TOKEN}`,
         },
-        body: JSON.stringify({ data: event })
+        body: JSON.stringify({ data: event }),
       });
 
       const json = await res.json();

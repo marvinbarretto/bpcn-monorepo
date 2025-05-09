@@ -1,14 +1,14 @@
 {
   "name": "@bpcn-monorepo/source",
   "version": "0.0.0",
+  "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "nx serve frontend",
     "build": "nx build frontend",
-    "test": "nx test frontend",
-    "dev:ssr": "nx run frontend:serve-ssr"
+    "dev:ssr": "nx run frontend:serve-ssr",
+    "start": "nx serve frontend",
+    "test": "nx test frontend"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^19.0.0",
     "@angular/cdk": "19.2.11",

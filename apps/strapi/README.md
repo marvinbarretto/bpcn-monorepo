@@ -1,13 +1,17 @@
 ## Common commands
+
 - `nx serve strapi` - Start the Strapi server
 - `rm -rf apps/strapi/.tmp/data.db` - Delete the database (SQLite)
 
 ## Seeding
+
 TODO: Need to make this a bit more useful
+
 - `npx ts-node apps/strapi/scripts/seed-events.ts`
 - `npx ts-node apps/strapi/scripts/seed-pages.ts`
 
 ### Seeding users
+
 - Check `STRAPI_SEEDER_TOKEN` is set in `apps/strapi/.env`
 - Manually add `Admin` and `Author` roles if missing (will be on a fresh boot)
 - `npx ts-node apps/strapi/scripts/seed-users.ts`

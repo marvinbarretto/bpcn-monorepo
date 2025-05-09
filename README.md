@@ -1,5 +1,5 @@
 # BPCN
 
-- frontend `nx serve ssr-demo`
-- frontend ssr `nx run ssr-demo:serve-ssr`
+- frontend `nx serve frontend`
+- frontend ssr `nx run frontend:serve-ssr`
 - backend `npx serve strapi`

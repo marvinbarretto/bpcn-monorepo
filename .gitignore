@@ -51,6 +51,6 @@ Thumbs.db
 backend/src/extensions/documentation/*
 
 # Angular environment files
-apps/ssr-demo/src/environments/environment.local.ts
+apps/frontend/src/environments/environment.local.ts
 
 .vscode/settings.json

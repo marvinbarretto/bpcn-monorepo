@@ -24,12 +24,7 @@
     },
     "eventStatus": {
       "type": "enumeration",
-      "enum": [
-        "Pending",
-        "Approved",
-        "Rejected",
-        "Archived"
-      ]
+      "enum": ["Pending", "Approved", "Rejected", "Archived"]
     },
     "slug": {
       "type": "uid",
@@ -49,12 +44,7 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
+      "allowedTypes": ["images", "files", "videos", "audios"]
     },
     "featured": {
       "type": "boolean"
