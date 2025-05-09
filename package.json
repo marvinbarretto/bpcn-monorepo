@@ -6,10 +6,7 @@
     "start": "nx serve frontend",
     "build": "nx build frontend",
     "test": "nx test frontend",
-    "dev:ssr": "nx run frontend:serve-ssr",
-    "start-strapi": "cd apps/strapi && strapi start",
-    "build-strapi": "cd apps/strapi && strapi build",
-    "preinstall": "node ./scripts/enforce-npm-ci.js"
+    "dev:ssr": "nx run frontend:serve-ssr"
   },
   "private": true,
   "dependencies": {
@@ -25,10 +22,6 @@
     "@angular/router": "~19.2.0",
     "@angular/ssr": "~19.2.0",
     "@jest/globals": "29.7.0",
-    "@strapi/plugin-cloud": "5.1.0",
-    "@strapi/plugin-documentation": "5.1.1",
-    "@strapi/plugin-users-permissions": "5.1.0",
-    "@strapi/strapi": "5.1.0",
     "axios": "1.7.7",
     "better-sqlite3": "11.10.0",
     "compression": "1.8.0",
